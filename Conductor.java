@@ -9,20 +9,21 @@ public class Conductor {
     private String telefono;
     private String correo;
 
-    public Conductor(String nombre, String cedula, String licencia, String telefono) {
+    public Conductor(String nombre, String cedula, String licencia, String telefono, String correo) {
         this.nombre = nombre;
         this.cedula = cedula;
         this.licencia = licencia;
         this.telefono = telefono;
+        this.correo = correo;
     }
 
     public void almacenarConductor(Conductor conductor) {
-        try {
-            FileWriter writer = new FileWriter("conductores.txt", true);
-            writer.write(conductor.getNombre() + "," + conductor.getCedula() + "," + conductor.getLicencia() + "," + conductor.getTelefono() + "\n");
-            writer.close();
+        File archivo = new File("conductores.txt");
+        try (FileWriter writer = new FileWriter(archivo, true)) {
+            writer.write(conductor.getNombre() + "," + conductor.getCedula() + "," + conductor.getLicencia() + ","
+                    + conductor.getTelefono() + "," + conductor.getCorreo() + "\n");
         } catch (IOException e) {
-            System.out.println("Error al almacenar conductor: " + e.getMessage());
+            System.out.println("Error al almacenar el conductor: " + e.getMessage());
         }
     }
 

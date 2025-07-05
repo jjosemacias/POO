@@ -15,31 +15,43 @@ public class Main {
                 System.out.println("Registrar Vehiculo:");
                 System.out.print("Placa: ");
                 String placa = scanner.next();
+                scanner.nextLine();
                 System.out.print("Modelo: ");
                 String modelo = scanner.next();
+                scanner.nextLine();
                 System.out.print("Tipo: ");
                 String tipo = scanner.next();
+                scanner.nextLine();
                 System.out.print("Capacidad de Carga: ");
                 String capacidadCarga = scanner.next();
+                scanner.nextLine();
                 System.out.print("Estado Operativo: ");
                 String estadoOperativo = scanner.next();
+                scanner.nextLine();
                 Vehiculo vehiculo = new Vehiculo(placa, modelo, tipo, capacidadCarga, estadoOperativo);
                 Vehiculo.almacenarVehiculo(vehiculo);
-                System.out.println("Vehiculo registrado exitosamente.");
+                System.out.print("Vehiculo registrado exitosamente.");
             break;
             case 2:
                 System.out.println("Registrar Conductor:");
                 System.out.print("Nombre: ");
                 String nombre = scanner.next();
+                scanner.nextLine();
                 System.out.print("Cedula: ");
                 String cedula = scanner.next();
+                scanner.nextLine();
                 System.out.print("Licencia: ");
                 String licencia = scanner.next();
+                scanner.nextLine();
                 System.out.print("Telefono: ");
                 String telefono = scanner.next();
-                Conductor conductor = new Conductor(nombre, licencia, telefono, cedula);
+                scanner.nextLine();
+                System.out.print("Correo: ");
+                String correo = scanner.next();
+                scanner.nextLine();
+                Conductor conductor = new Conductor(nombre, cedula, licencia, telefono, correo);
                 conductor.almacenarConductor(conductor);
-                System.out.println("Conductor registrado exitosamente.");
+                System.out.print("Conductor registrado exitosamente.");
             break;
             case 3:
                 // Lógica para asignar vehículo a conductor
