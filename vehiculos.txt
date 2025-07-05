@@ -1,0 +1,4 @@
+1902,lari,sport,2,1
+gabo,gordo,3,1,0
+rf,rf,rf,rf,1
+2,2,2,2,1

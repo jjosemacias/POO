@@ -1,8 +1,8 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.util.Scanner;
+import java.io.RandomAccessFile;
 
 public class Vehiculo{
     private String placa;
@@ -29,6 +29,37 @@ public class Vehiculo{
         }
     }
 
+    public static Vehiculo buscarVehiculo(String placa) {
+        File archivo = new File("vehiculos.txt");
+        try (Scanner scanner = new Scanner(archivo)) {
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] datos = linea.split(",");
+                if (datos[0].equals(placa)) {
+                    String modelo = datos[1];
+                    String tipo = datos[2];
+                    String capacidadCarga = datos[3];
+                    boolean estadoOperativo = datos[4].equals("1");
+                    return new Vehiculo(placa, modelo, tipo, capacidadCarga, estadoOperativo);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al buscar el vehiculo: " + e.getMessage());
+        }
+        return null;
+    }
+
+    public void asignarConductor(Conductor conductor) {
+        File archivo = new File("asignaciones.txt");
+        try (FileWriter writer = new FileWriter(archivo, true)) {
+            writer.write(this.placa + "," + conductor.getCedula() + "\n");
+        } catch (IOException e) {
+            System.out.println("Error al asignar el conductor al vehiculo: " + e.getMessage());
+        }
+    }
+
+
+    // Getters y Setters
     public String getPlaca() {
         return placa;
     }

@@ -1,6 +1,10 @@
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
+import java.io.BufferedReader;
 
 public class Conductor {
     private String nombre;
@@ -27,6 +31,42 @@ public class Conductor {
         }
     }
 
+    public static Conductor conductorLibre() {
+    try (BufferedReader br = new BufferedReader(new FileReader("conductores.txt"))) {
+        String linea;
+        while ((linea = br.readLine()) != null) {
+            String[] datos = linea.split(",");
+            if (datos.length >= 5) {
+                String cedula = datos[1];
+                boolean asignado = false;
+
+                try (BufferedReader br2 = new BufferedReader(new FileReader("asignaciones.txt"))) {
+                    String asignacion;
+                    while ((asignacion = br2.readLine()) != null) {
+                        String[] datosAsignacion = asignacion.split(",");
+                        if (datosAsignacion.length >= 2 && datosAsignacion[1].equals(cedula)) {
+                            asignado = true;
+                            break;
+                        }
+                    }
+                } catch (IOException e) {
+                    System.out.println("Error al leer el archivo de asignaciones: " + e.getMessage());
+                }
+
+                if (!asignado) {
+                    // Devuelve el primer conductor libre encontrado
+                    return new Conductor(datos[0], datos[1], datos[2], datos[3], datos[4]);
+                }
+            }
+        }
+    } catch (IOException e) {
+        System.out.println("Error al leer el archivo de conductores: " + e.getMessage());
+    }
+    return null; // No se encontró ningún conductor libre
+}
+
+
+    //getter y setters
     public String getNombre() {
         return nombre;
     }

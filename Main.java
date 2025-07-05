@@ -43,6 +43,7 @@ public class Main {
                 Vehiculo vehiculo = new Vehiculo(placa, modelo, tipo, capacidadCarga, estadoOperativo);
                 Vehiculo.almacenarVehiculo(vehiculo);
                 System.out.print("Vehiculo registrado exitosamente.");
+                esperar(1000);
             break;
 
             case 2:
@@ -65,13 +66,33 @@ public class Main {
                 Conductor conductor = new Conductor(nombre, cedula, licencia, telefono, correo);
                 conductor.almacenarConductor(conductor);
                 System.out.print("Conductor registrado exitosamente.");
+                esperar(1000);
             break;
+
             case 3:
-                System.out.println("Asignar Vehiculo a Conductor:");
-                System.out.print("Placa del Vehiculo Registrado: ");
-                String placaRegistrada = scanner.next();
+                System.out.println("-Asignar Vehiculo a Conductor-");
+                System.out.print("Ingrese la placa del vehículo: ");
+                String placaVehiculo = scanner.next();
+                Vehiculo vehiculoBuscado = Vehiculo.buscarVehiculo(placaVehiculo);
+                if (vehiculoBuscado == null) {
+                    System.out.println("Vehículo no encontrado.");
+                    esperar(1000);
+                    break;
+                }else if(!vehiculoBuscado.isEstadoOperativo()) {
+                    System.out.println("El vehículo no está operativo.");
+                    esperar(1000);
+                    break;
+                }else{
+                    Conductor conductorLibre = Conductor.conductorLibre();
+                    if (conductorLibre != null) {
+                        vehiculoBuscado.asignarConductor(conductorLibre);
+                        System.out.println("Vehículo asignado al conductor " + conductorLibre.getNombre() + " con cédula " + conductorLibre.getCedula() + ".");
+                    } else {
+                        System.out.println("No hay conductores libres disponibles.");
+                    }
+                }
                 scanner.nextLine();
-                // Lógica para asignar vehículo a conductor
+                
                 break;
             case 4:
                 // Lógica para registrar paquete a entrega
