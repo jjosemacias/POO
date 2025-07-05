@@ -12,7 +12,7 @@ public class Main {
             opcion = scanner.nextInt();
         switch(opcion){
             case 1:
-                System.out.println("Registrar Vehiculo:");
+                System.out.println("-Registrar Vehiculo-");
                 System.out.print("Placa: ");
                 String placa = scanner.next();
                 scanner.nextLine();
@@ -25,15 +25,28 @@ public class Main {
                 System.out.print("Capacidad de Carga: ");
                 String capacidadCarga = scanner.next();
                 scanner.nextLine();
-                System.out.print("Estado Operativo: ");
-                String estadoOperativo = scanner.next();
+
+                //Estado Operativo y Validacion de entrada y conversion a booleano
+                System.out.print("¿El vehículo está operativo? (1 = Sí, 0 = No): ");
+                while(!scanner.hasNextInt()) {
+                    System.out.println("Entrada inválida. Por favor, ingresa 1 para Sí o 0 para No.");
+                    scanner.next();
+                }
+                int intestadoOperativo = scanner.nextInt();
+                while(intestadoOperativo != 0 && intestadoOperativo != 1) {
+                    System.out.println("Entrada inválida. Por favor, ingresa 1 para Sí o 0 para No.");
+                    intestadoOperativo = scanner.nextInt();
+                }
+                boolean estadoOperativo = (intestadoOperativo == 1);
                 scanner.nextLine();
+
                 Vehiculo vehiculo = new Vehiculo(placa, modelo, tipo, capacidadCarga, estadoOperativo);
                 Vehiculo.almacenarVehiculo(vehiculo);
                 System.out.print("Vehiculo registrado exitosamente.");
             break;
+
             case 2:
-                System.out.println("Registrar Conductor:");
+                System.out.println("-Registrar Conductor-");
                 System.out.print("Nombre: ");
                 String nombre = scanner.next();
                 scanner.nextLine();
@@ -54,6 +67,10 @@ public class Main {
                 System.out.print("Conductor registrado exitosamente.");
             break;
             case 3:
+                System.out.println("Asignar Vehiculo a Conductor:");
+                System.out.print("Placa del Vehiculo Registrado: ");
+                String placaRegistrada = scanner.next();
+                scanner.nextLine();
                 // Lógica para asignar vehículo a conductor
                 break;
             case 4:
