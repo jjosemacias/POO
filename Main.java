@@ -26,10 +26,21 @@ public class Main {
                 Vehiculo vehiculo = new Vehiculo(placa, modelo, tipo, capacidadCarga, estadoOperativo);
                 Vehiculo.almacenarVehiculo(vehiculo);
                 System.out.println("Vehiculo registrado exitosamente.");
-            
+            break;
             case 2:
-                // Lógica para registrar conductor
-                break;
+                System.out.println("Registrar Conductor:");
+                System.out.print("Nombre: ");
+                String nombre = scanner.next();
+                System.out.print("Cedula: ");
+                String cedula = scanner.next();
+                System.out.print("Licencia: ");
+                String licencia = scanner.next();
+                System.out.print("Telefono: ");
+                String telefono = scanner.next();
+                Conductor conductor = new Conductor(nombre, licencia, telefono, cedula);
+                conductor.almacenarConductor(conductor);
+                System.out.println("Conductor registrado exitosamente.");
+            break;
             case 3:
                 // Lógica para asignar vehículo a conductor
                 break;
@@ -57,11 +68,7 @@ public class Main {
             default:
                 System.out.println("Opción no válida");
                 scanner.nextLine();
-                try{
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    //ignorar excepcion
-                }
+                
                 break;
         }
     } while(opcion != 10);
@@ -80,5 +87,12 @@ public class Main {
         System.out.println("8. Consultar Historial de Vehiculo");
         System.out.println("9. Generar Reporte de Entrega por Ruta");
         System.out.println("10. Salir");
+    }
+    public static void esperar(int ms){
+        try{
+                    Thread.sleep(ms);
+                } catch (InterruptedException e) {
+                    //ignorar excepcion
+                }
     }
 }

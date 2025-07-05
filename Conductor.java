@@ -1,3 +1,7 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class Conductor {
     private String nombre;
     private String cedula;
@@ -10,6 +14,16 @@ public class Conductor {
         this.cedula = cedula;
         this.licencia = licencia;
         this.telefono = telefono;
+    }
+
+    public void almacenarConductor(Conductor conductor) {
+        try {
+            FileWriter writer = new FileWriter("conductores.txt", true);
+            writer.write(conductor.getNombre() + "," + conductor.getCedula() + "," + conductor.getLicencia() + "," + conductor.getTelefono() + "\n");
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error al almacenar conductor: " + e.getMessage());
+        }
     }
 
     public String getNombre() {
