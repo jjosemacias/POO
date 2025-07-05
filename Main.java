@@ -92,8 +92,9 @@ public class Main {
                     }
                 }
                 scanner.nextLine();
-                
+                esperar(1000);
                 break;
+                
             case 4:
                 // Lógica para registrar paquete a entrega
                 break;
