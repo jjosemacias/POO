@@ -130,22 +130,18 @@ public class Main {
                     String placaa = scanner.nextLine();
                     System.out.print("Cédula del conductor asignado: ");
                     String cedulaa = scanner.nextLine();
-
-                    List<String> codigosPaquetes = new ArrayList<>();
                     System.out.println("Ingrese los códigos de paquetes (escriba FIN para terminar):");
+                    List<String> codigosPaquetes = new ArrayList<>();
                     while (true) {
                         String codigo = scanner.nextLine();
                         if (codigo.equalsIgnoreCase("FIN")) break;
                         codigosPaquetes.add(codigo);
                     }
-
                     Paquete.crearRuta(fecha, placaa, cedulaa, codigosPaquetes);
                     System.out.println("Ruta creada y guardada con éxito.");
-
                 } catch (Exception e) {
                     System.out.println("Error al crear ruta: " + e.getMessage());
                 }
-    
                 break;
             case 6:
                 // Lógica para iniciar rastro de vehículo
@@ -185,9 +181,9 @@ public class Main {
         System.out.println("9. Generar Reporte de Entrega por Ruta");
         System.out.println("10. Salir");
     }
-    public static void esperar(int ms){
+    public static void esperar(int milis){
         try{
-                    Thread.sleep(ms);
+                    Thread.sleep(milis);
                 } catch (InterruptedException e) {
                     //ignorar excepcion
                 }
