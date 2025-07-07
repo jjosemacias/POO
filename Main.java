@@ -1,3 +1,7 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -95,8 +99,8 @@ public class Main {
                 }
                 scanner.nextLine();
                 esperar(1000);
-                break;
-                
+            break;    
+
             case 4:
                 System.out.println("-Registrar Paquete-");
                 System.out.print("ID: ");
@@ -125,7 +129,7 @@ public class Main {
             case 5:
                 try {
                     System.out.print("Fecha de la ruta (dd/mm/aaaa): ");
-                    String fecha = scanner.nextLine();
+                    String fechaa = scanner.nextLine();
                     System.out.print("Placa del vehículo asignado: ");
                     String placaa = scanner.nextLine();
                     System.out.print("Cédula del conductor asignado: ");
@@ -134,26 +138,222 @@ public class Main {
                     List<String> codigosPaquetes = new ArrayList<>();
                     while (true) {
                         String codigo = scanner.nextLine();
-                        if (codigo.equalsIgnoreCase("FIN")) break;
-                        codigosPaquetes.add(codigo);
+                        if (codigo.equalsIgnoreCase("FIN")){
+                            break;
+                        }else{
+                            codigosPaquetes.add(codigo);
+                        }
                     }
-                    Paquete.crearRuta(fecha, placaa, cedulaa, codigosPaquetes);
+                    Paquete.crearRuta(fechaa, placaa, cedulaa, codigosPaquetes);
                     System.out.println("Ruta creada y guardada con éxito.");
-                } catch (Exception e) {
+                }catch (Exception e) {
                     System.out.println("Error al crear ruta: " + e.getMessage());
                 }
-                break;
+            break;
             case 6:
-                // Lógica para iniciar rastro de vehículo
-                break;
+                    try {
+                        System.out.print("Placa del vehículo a rastrear: ");
+                        String placaa = scanner.nextLine();
+                        System.out.print("Fecha de la ruta (dd/mm/aaaa): ");
+                        String fecha = scanner.nextLine();
+                        System.out.print("Hora de salida (hh:mm): ");
+                        String hora = scanner.nextLine();
+
+                        String registro = fecha + "," + placaa + "," + hora;
+                        //guardarEnArchivo("rastreo.txt", registro);
+
+                        System.out.println("Rastreo iniciado exitosamente.");
+                    } catch (Exception e) {
+                        System.out.println("Error al iniciar rastreo: " + e.getMessage());
+                    }
+            break;
             case 7:
-                // Lógica para registrar evento de ruta
-                break; 
+                try {
+                    System.out.println("--- Registrar Evento de Ruta ---");
+                    System.out.print("Fecha (dd/mm/aaaa): ");
+                    String fecha = scanner.nextLine();
+                    System.out.print("Placa del vehículo: ");
+                    String placaa = scanner.nextLine();
+                    System.out.println("Tipo de evento:");
+                    System.out.println("1. Parada técnica");
+                    System.out.println("2. Entrega realizada");
+                    System.out.println("3. Incidente en vía");
+                    System.out.println("4. Retorno a base");
+                    System.out.print("Seleccione tipo (1-4): ");
+                    int tipoo = scanner.nextInt(); 
+                    scanner.nextLine();
+                    String tipoEvento = switch (tipoo) {
+                        case 1 -> "Parada técnica";
+                        case 2 -> "Entrega realizada";
+                        case 3 -> "Incidente en vía";
+                        case 4 -> "Retorno a base";
+                        default -> "Otro";
+                    };
+                    System.out.print("Hora del evento (hh:mm): ");
+                    String hora = scanner.nextLine();
+                    System.out.print("Descripción: ");
+                    String descripcionn = scanner.nextLine();
+
+                    String evento = fecha + "," + placaa + "," + tipoEvento + "," + hora + "," + descripcionn;
+                    //guardarEnArchivo("eventosRuta.txt", evento);
+                    System.out.println("Evento registrado exitosamente.");
+                } catch (Exception e) {
+                    System.out.println("Error al registrar el evento: " + e.getMessage());
+                }
+            break; 
             case 8:
-                // Lógica para consultar historial de vehículo 
-                break;
+
+        //Codigo con CHAT GPT XD ya me dio pereza esta parte asi que mñana la reviso
+        //el codigo de chatgpt es para tener una referencia :v
+       /*try {
+            System.out.print("Ingrese la placa del vehículo: ");
+            String placa = scanner.nextLine();
+
+            List<String> rutas = new ArrayList<>();
+            List<String> eventos = new ArrayList<>();
+            int entregas = 0;
+
+            try (Scanner rutaScanner = new Scanner(new File("rutas.txt"))) {
+                while (rutaScanner.hasNextLine()) {
+                    String linea = rutaScanner.nextLine();
+                    if (linea.contains(placa)) {
+                        rutas.add(linea);
+                        String[] partes = linea.split(",");
+                        if (partes.length >= 4) {
+                            entregas += partes[3].split("\\|").length;
+                        }
+                    }
+                }
+            }
+
+            try (Scanner eventoScanner = new Scanner(new File("eventosRuta.txt"))) {
+                while (eventoScanner.hasNextLine()) {
+                    String linea = eventoScanner.nextLine();
+                    if (linea.contains(placa)) {
+                        eventos.add(linea);
+                    }
+                }
+            }
+
+            System.out.println("--- Historial del Vehículo " + placa + " ---");
+            System.out.println("Rutas:");
+            rutas.forEach(System.out::println);
+            System.out.println("\nEventos:");
+            eventos.forEach(System.out::println);
+            System.out.println("\nTotal de entregas realizadas: " + entregas);
+
+            try (FileWriter fw = new FileWriter("historialVehiculos.txt", true);
+                 BufferedWriter bw = new BufferedWriter(fw)) {
+                bw.write("Placa: " + placa);
+                bw.newLine();
+                bw.write("Rutas:");
+                bw.newLine();
+                for (String r : rutas) {
+                    bw.write(r);
+                    bw.newLine();
+                }
+                bw.write("Eventos:");
+                bw.newLine();
+                for (String ev : eventos) {
+                    bw.write(ev);
+                    bw.newLine();
+                }
+                bw.write("Total entregas: " + entregas);
+                bw.newLine();
+                bw.write("------------------------------");
+                bw.newLine();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error al consultar historial: " + e.getMessage());
+        }
+    }
+
+    public static void guardarEnArchivo(String nombreArchivo, String linea) {
+        try (FileWriter fw = new FileWriter(nombreArchivo, true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(linea);
+            bw.newLine();
+        } catch (IOException e) {
+            System.out.println("Error al guardar en archivo: " + e.getMessage());
+        }
+    } 
+                break;*/
             case 9:
-                // Lógica para generar reporte de entrega por ruta
+
+            //LO MISMO QUE EL 8 :V
+    /*public static void generarReporteRuta() {
+        try {
+            System.out.print("Ingrese la fecha de la ruta (dd/mm/aaaa): ");
+            String fecha = scanner.nextLine();
+            System.out.print("Ingrese la placa del vehículo: ");
+            String placa = scanner.nextLine();
+
+            String lineaRuta = null;
+            try (Scanner rutasScanner = new Scanner(new File("rutas.txt"))) {
+                while (rutasScanner.hasNextLine()) {
+                    String linea = rutasScanner.nextLine();
+                    if (linea.startsWith(fecha + "," + placa + ",")) {
+                        lineaRuta = linea;
+                        break;
+                    }
+                }
+            }
+
+            if (lineaRuta == null) {
+                System.out.println("Ruta no encontrada.");
+                return;
+            }
+
+            String[] partes = lineaRuta.split(",");
+            String cedula = partes[2];
+            String[] codigos = partes[3].split("\\|");
+            int entregas = 0, fallidas = 0;
+            List<String> eventos = new ArrayList<>();
+            String horaInicio = "";
+            String horaFin = "";
+
+            try (Scanner eventosScanner = new Scanner(new File("eventosRuta.txt"))) {
+                while (eventosScanner.hasNextLine()) {
+                    String linea = eventosScanner.nextLine();
+                    if (linea.contains(fecha) && linea.contains(placa)) {
+                        eventos.add(linea);
+                        if (linea.contains("Entrega realizada")) entregas++;
+                        if (linea.contains("Incidente")) fallidas++;
+                        String[] ev = linea.split(",");
+                        if (horaInicio.equals("") || ev[3].compareTo(horaInicio) < 0) horaInicio = ev[3];
+                        if (horaFin.equals("") || ev[3].compareTo(horaFin) > 0) horaFin = ev[3];
+                    }
+                }
+            }
+
+            String resumen = "--- Reporte de Ruta ---\n" +
+                    "Fecha: " + fecha + "\n" +
+                    "Vehículo: " + placa + "\n" +
+                    "Conductor (cédula): " + cedula + "\n" +
+                    "Entregas exitosas: " + entregas + "\n" +
+                    "Entregas fallidas: " + fallidas + "\n" +
+                    "Tiempo total en ruta: " + horaInicio + " - " + horaFin + "\n" +
+                    "Eventos registrados: " + eventos.size();
+
+            System.out.println(resumen);
+
+            guardarEnArchivo("reportes.txt", resumen.replace("\n", " | "));
+
+        } catch (IOException e) {
+            System.out.println("Error al generar el reporte: " + e.getMessage());
+        }
+    }
+
+    public static void guardarEnArchivo(String nombreArchivo, String linea) {
+        try (FileWriter fw = new FileWriter(nombreArchivo, true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(linea);
+            bw.newLine();
+        } catch (IOException e) {
+            System.out.println("Error al guardar en archivo: " + e.getMessage());
+        }
+    }*/
                 break;
             case 10:
                 System.out.println("Saliendo del programa...");

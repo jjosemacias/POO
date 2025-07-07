@@ -32,11 +32,11 @@ public class Paquete {
             System.out.println("Error al almacenar el paquete: " + e.getMessage());
         }
     }
-
+    
     public static void crearRuta(String fecha, String placa, String cedula, List<String> codigos){
         String ruta = fecha + "," + placa + "," + cedula + "," + String.join("|", codigos);
         try (FileWriter fw = new FileWriter("rutas.txt", true)){
-            BufferedWriter bw = new BufferedWriter(fw) 
+            BufferedWriter bw = new BufferedWriter(fw); 
             bw.write(ruta);
             bw.newLine();
         }catch (IOException e) {
