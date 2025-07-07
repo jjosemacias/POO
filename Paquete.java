@@ -1,3 +1,9 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Scanner;
+import java.io.RandomAccessFile;
+
 public class Paquete {
     private String id;
     private String descripcion;
@@ -13,6 +19,27 @@ public class Paquete {
         this.destinatario = destinatario;
         this.direccion = direccion;
         this.telefono_contacto = telefono_contacto;
+    }
+
+    public static void almacenarPaquete(Paquete paquete) {
+        File archivo = new File("paquetes.txt");
+        try (FileWriter writer = new FileWriter(archivo, true)) {
+            writer.write(paquete.getId() + "," + paquete.getDescripcion() + "," + paquete.getPeso() + ","
+                    + paquete.getDestinatario() + "," + paquete.getDireccion() + "," + paquete.getTelefonoContacto() +  "\n");
+        } catch (IOException e) {
+            System.out.println("Error al almacenar el paquete: " + e.getMessage());
+        }
+    }
+
+    public static void crearRuta(String fecha, String placa, String cedula, List<String> codigos){
+        String ruta = fecha + "," + placa + "," + cedula + "," + String.join("|", codigos);
+        try (FileWriter fw = new FileWriter("rutas.txt", true)){
+            BufferedWriter bw = new BufferedWriter(fw) 
+            bw.write(ruta);
+            bw.newLine();
+        }catch (IOException e) {
+            System.out.println("Error al guardar la ruta: " + e.getMessage());
+        }  
     }
 
     public String getId() {

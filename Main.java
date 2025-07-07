@@ -96,10 +96,54 @@ public class Main {
                 break;
                 
             case 4:
-                // Lógica para registrar paquete a entrega
+                System.out.println("-Registrar Paquete-");
+                System.out.print("ID: ");
+                String id = scanner.next();
+                scanner.nextLine();
+                System.out.print("Descripcion: ");
+                String descripcion = scanner.next();
+                scanner.nextLine();
+                System.out.print("Peso: ");
+                String peso = scanner.next();
+                scanner.nextLine();
+                System.out.print("Destinatario: ");
+                String destinatario = scanner.next();
+                scanner.nextLine();
+                System.out.print("Direccion: ");
+                String direccion = scanner.next();
+                scanner.nextLine();
+                System.out.print("Telefono de contacto: ");
+                String telefono_contacto = scanner.next();
+                scanner.nextLine();
+                Paquete paquete = new Paquete(id,descripcion,peso,destinatario,direccion,telefono_contacto);
+                paquete.almacenarPaquete(paquete);
+                System.out.print("Paquete registrado exitosamente.");
+                esperar(1000);
                 break;
             case 5:
-                // Lógica para crear ruta de entrega
+                try {
+                    System.out.print("Fecha de la ruta (dd/mm/aaaa): ");
+                    String fecha = scanner.nextLine();
+                    System.out.print("Placa del vehículo asignado: ");
+                    String placa = scanner.nextLine();
+                    System.out.print("Cédula del conductor asignado: ");
+                    String cedula = scanner.nextLine();
+
+                    List<String> codigosPaquetes = new ArrayList<>();
+                    System.out.println("Ingrese los códigos de paquetes (escriba FIN para terminar):");
+                    while (true) {
+                        String codigo = scanner.nextLine();
+                        if (codigo.equalsIgnoreCase("FIN")) break;
+                        codigosPaquetes.add(codigo);
+                    }
+
+                    Paquete.crearRuta(fecha, placa, cedula, codigosPaquetes);
+                    System.out.println("Ruta creada y guardada con éxito.");
+
+                } catch (Exception e) {
+                    System.out.println("Error al crear ruta: " + e.getMessage());
+                }
+    
                 break;
             case 6:
                 // Lógica para iniciar rastro de vehículo
