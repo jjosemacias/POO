@@ -139,9 +139,9 @@ public class Main {
         System.out.println("9. Generar Reporte de Entrega por Ruta");
         System.out.println("10. Salir");
     }
-    public static void esperar(int ms){
+    public static void esperar(int milis){
         try{
-                    Thread.sleep(ms);
+                    Thread.sleep(milis);
                 } catch (InterruptedException e) {
                     //ignorar excepcion
                 }
