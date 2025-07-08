@@ -1,13 +1,10 @@
-package src.main.java.com.poo.proyecto;
+package com.poo.proyecto;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 
-import src.main.java.com.poo.proyecto.models.Conductor;
-import src.main.java.com.poo.proyecto.models.Paquete;
-import src.main.java.com.poo.proyecto.models.Vehiculo;
+import com.poo.proyecto.models.Conductor;
+import com.poo.proyecto.models.Vehiculo;
+
 
 
 public class Main {
@@ -19,149 +16,176 @@ public class Main {
             mostrarMenu();
             System.out.println("Selecciona una opcion:");
             opcion = scanner.nextInt();
-        switch(opcion){
-            case 1:
+            scanner.nextLine(); // Limpiar el buffer del scanner
+
+        switch (opcion){
+            case 1 ->{
                 System.out.println("-Registrar Vehiculo-");
-                System.out.print("Placa: ");
-                String placa = scanner.next();
-                scanner.nextLine();
-                System.out.print("Modelo: ");
-                String modelo = scanner.next();
-                scanner.nextLine();
-                System.out.print("Tipo: ");
-                String tipo = scanner.next();
-                scanner.nextLine();
-                System.out.print("Capacidad de Carga: ");
-                String capacidadCarga = scanner.next();
-                scanner.nextLine();
-
-                //Estado Operativo y Validacion de entrada y conversion a booleano
-                System.out.print("¿El vehículo está operativo? (1 = Sí, 0 = No): ");
-                while(!scanner.hasNextInt()) {
-                    System.out.println("Entrada inválida. Por favor, ingresa 1 para Sí o 0 para No.");
-                    scanner.next();
-                }
-                int intestadoOperativo = scanner.nextInt();
-                while(intestadoOperativo != 0 && intestadoOperativo != 1) {
-                    System.out.println("Entrada inválida. Por favor, ingresa 1 para Sí o 0 para No.");
-                    intestadoOperativo = scanner.nextInt();
-                }
-                boolean estadoOperativo = (intestadoOperativo == 1);
-                scanner.nextLine();
-
-                Vehiculo vehiculo = new Vehiculo(placa, modelo, tipo, capacidadCarga, estadoOperativo);
-                Vehiculo.almacenarVehiculo(vehiculo);
-                System.out.print("Vehiculo registrado exitosamente.");
-                esperar(1000);
-            break;
-
-            case 2:
-                System.out.println("-Registrar Conductor-");
-                System.out.print("Nombre: ");
-                String nombre = scanner.next();
-                scanner.nextLine();
-                System.out.print("Cedula: ");
-                String cedula = scanner.next();
-                scanner.nextLine();
-                System.out.print("Licencia: ");
-                String licencia = scanner.next();
-                scanner.nextLine();
-                System.out.print("Telefono: ");
-                String telefono = scanner.next();
-                scanner.nextLine();
-                System.out.print("Correo: ");
-                String correo = scanner.next();
-                scanner.nextLine();
-                Conductor conductor = new Conductor(nombre, cedula, licencia, telefono, correo);
-                conductor.almacenarConductor(conductor);
-                System.out.print("Conductor registrado exitosamente.");
-                esperar(1000);
-            break;
-
-            case 3:
-                System.out.println("-Asignar Vehiculo a Conductor-");
-                System.out.print("Ingrese la placa del vehículo: ");
-                String placaVehiculo = scanner.next();
-                Vehiculo vehiculoBuscado = Vehiculo.buscarVehiculoRegistrado(placaVehiculo);
-                if (vehiculoBuscado == null) {
-                    System.out.println("Vehículo no encontrado.");
+                Vehiculo vehiculo = new Vehiculo("","","",0,false);
+                while (true) {
+                    System.out.print("Placa: ");
+                    String placa = scanner.nextLine();
+                    if (vehiculo.setPlaca(placa)) break;
                     esperar(1000);
-                    break;
-                }else if(!vehiculoBuscado.isEstadoOperativo()) {
-                    System.out.println("El vehículo no está operativo.");
+                }
+                while (true) {
+                    System.out.print("Modelo: ");
+                    String modelo = scanner.nextLine();
+                    if (vehiculo.setModelo(modelo)) break;
                     esperar(1000);
-                    break;
-                }else{
-                    Conductor conductorLibre = Conductor.conductorLibre();
-                    if (conductorLibre != null) {
-                        vehiculoBuscado.asignarConductor(conductorLibre);
-                        System.out.println("Vehículo asignado al conductor " + conductorLibre.getNombre() + " con cédula " + conductorLibre.getCedula() + ".");
+                }
+                while (true) {
+                    System.out.print("Tipo (Camioneta, Camion, Furgoneta): ");
+                    String tipo = scanner.nextLine();
+                    if (vehiculo.setTipo(tipo)) break;
+                    esperar(1000);
+                }
+                while (true) {
+                    System.out.print("Capacidad de Carga (en kg): ");
+                    String capacidadCargaStr = scanner.nextLine();
+                    if (vehiculo.setCapacidadCarga(Integer.parseInt(capacidadCargaStr))) break;
+                    esperar(1000);
+                }
+                while (true) {
+                    System.out.print("Estado Operativo (1 = Operativo, 0 = No Operativo): ");
+                    String estadoStr = scanner.nextLine();
+                    if (estadoStr.equals("1")) {
+                        vehiculo.setEstadoOperativo(true);
+                        break;
+                    } else if (estadoStr.equals("0")) {
+                        vehiculo.setEstadoOperativo(false);
+                        break;
                     } else {
-                        System.out.println("No hay conductores libres disponibles.");
+                        System.out.println("Entrada inválida. Debe ingresar 1 para Operativo o 0 para No Operativo.");
+                        esperar(1000);  
                     }
                 }
-                scanner.nextLine();
-                esperar(1000);
-            break;    
+                vehiculo.almacenarVehiculo();
+                System.out.println("Vehículo registrado exitosamente.");
+                esperar(2000);
+                scanner.nextLine(); // Limpiar el buffer del scanner
+            }
 
-            case 4:
-                System.out.println("-Registrar Paquete-");
-                System.out.print("ID: ");
-                String id = scanner.next();
-                scanner.nextLine();
-                System.out.print("Descripcion: ");
-                String descripcion = scanner.next();
-                scanner.nextLine();
-                System.out.print("Peso: ");
-                String peso = scanner.next();
-                scanner.nextLine();
-                System.out.print("Destinatario: ");
-                String destinatario = scanner.next();
-                scanner.nextLine();
-                System.out.print("Direccion: ");
-                String direccion = scanner.next();
-                scanner.nextLine();
-                System.out.print("Telefono de contacto: ");
-                int telefono_contacto = scanner.nextInt();
-                scanner.nextLine();
-                Paquete paquete = new Paquete(id,descripcion,peso,destinatario,direccion,telefono_contacto);
-                Paquete.almacenarPaquete(paquete);
-                System.out.print("Paquete registrado exitosamente.");
-                esperar(1000);
-                break;
-            case 5:
-            System.out.println("-Crear Ruta de Entrega-");
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                sdf.setLenient(false);
-                String fecha_string_final = "";
-                boolean fechaValida = false;
-                while (!fechaValida) {
-                    System.out.print("Ingrese fecha (dd/MM/yyyy): ");
-                    String fechaStr = scanner.next();
-                    scanner.nextLine();
-
-                    try {
-                        Date fecha = sdf.parse(fechaStr);
-                        fecha_string_final = sdf.format(fecha);
-                        fechaValida = true;
-                    } catch (ParseException e) {
-                        System.out.println("Fecha inválida. Intente nuevamente.");
-                    }
+            case 2 -> {
+                System.out.println("-Registrar Conductor-");
+                Conductor conductor = new Conductor("","", "", "", "");
+                System.out.print("Nombre: ");
+                conductor.setNombre(scanner.nextLine());
+                while (true) {
+                    System.out.print("Cédula: ");   
+                    String cedula = scanner.nextLine();   
+                    if (conductor.setCedula(cedula)) break;   
+                    esperar(1000);
                 }
-                System.out.println("Fecha ingresada corectamente");
+                while (true) {
+                    System.out.print("Licencia (A-F): ");
+                    String licencia = scanner.nextLine();
+                    if (conductor.setLicencia(licencia)) break;
+                    esperar(1000);
+                }
+                while (true) {
+                    System.out.print("Teléfono: ");
+                    String telefono = scanner.nextLine();
+                    if (conductor.setTelefono(telefono)) break;
+                    esperar(1000);
+                }
+                while (true) {
+                    System.out.print("Correo: ");
+                    String correo = scanner.nextLine();
+                    if (conductor.setCorreo(correo)) break;
+                    esperar(1000);
+                }
+                conductor.almacenarConductor();
+                System.out.println("Conductor registrado exitosamente.");
+                esperar(2000);
+                scanner.nextLine(); // Limpiar el buffer del scanner
+                }
+
+            case 3 -> {
+                  System.out.println("-Asignar Vehiculo a Conductor-");
+                  System.out.print("Ingrese la placa del vehículo: ");
+                  String placaVehiculo = scanner.next();
+                  Vehiculo vehiculoBuscado = Vehiculo.buscarVehiculoRegistrado(placaVehiculo);
+                  if (vehiculoBuscado == null) {
+                      System.out.println("Vehículo no encontrado.");
+                      esperar(1000);
+                      break;
+                  }else if(!vehiculoBuscado.isEstadoOperativo()) {
+                      System.out.println("El vehículo no está operativo.");
+                      esperar(1000);
+                      break;
+                  }else{
+                      Conductor conductorLibre = Conductor.conductorLibre();
+                      if (conductorLibre != null) {
+                          vehiculoBuscado.asignarConductor(conductorLibre);
+                          System.out.println("Vehículo asignado al conductor " + conductorLibre.getNombre() + " con cédula " + conductorLibre.getCedula() + ".");
+                      } else {
+                          System.out.println("No hay conductores libres disponibles.");
+                      }
+                  }
+                  scanner.nextLine();
+                  esperar(1000);
+                  break;
+            }
+            case 4 -> {
+            //     System.out.println("-Registrar Paquete-");
+            //     System.out.print("ID: ");
+            //     String id = scanner.next();
+            //     scanner.nextLine();
+            //     System.out.print("Descripcion: ");
+            //     String descripcion = scanner.next();
+            //     scanner.nextLine();
+            //     System.out.print("Peso: ");
+            //     String peso = scanner.next();
+            //     scanner.nextLine();
+            //     System.out.print("Destinatario: ");
+            //     String destinatario = scanner.next();
+            //     scanner.nextLine();
+            //     System.out.print("Direccion: ");
+            //     String direccion = scanner.next();
+            //     scanner.nextLine();
+            //     System.out.print("Telefono de contacto: ");
+            //     int telefono_contacto = scanner.nextInt();
+            //     scanner.nextLine();
+            //     Paquete paquete = new Paquete(id,descripcion,peso,destinatario,direccion,telefono_contacto);
+            //     Paquete.almacenarPaquete(paquete);
+            //     System.out.print("Paquete registrado exitosamente.");
+            //     esperar(1000);
+            }
+            case 5 -> {
+            // System.out.println("-Crear Ruta de Entrega-");
+            //     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            //     sdf.setLenient(false);
+            //     String fecha_string_final = "";
+            //     boolean fechaValida = false;
+            //     while (!fechaValida) {
+            //         System.out.print("Ingrese fecha (dd/MM/yyyy): ");
+            //         String fechaStr = scanner.next();
+            //         scanner.nextLine();
+
+            //         try {
+            //             Date fecha = sdf.parse(fechaStr);
+            //             fecha_string_final = sdf.format(fecha);
+            //             fechaValida = true;
+            //         } catch (ParseException e) {
+            //             System.out.println("Fecha inválida. Intente nuevamente.");
+            //         }
+            //     }
+            //     System.out.println("Fecha ingresada corectamente");
 
 
-                ///
+            //     ///
 
-                System.out.print("Ingrese la Placa del vehículo asignado: ");
-                String placa_c5 = scanner.next();
-                scanner.nextLine();
+            //     System.out.print("Ingrese la Placa del vehículo asignado: ");
+            //     String placa_c5 = scanner.next();
+            //     scanner.nextLine();
 
 
                 
-                esperar(1000);
-            break;
-            case 6:
+            //     esperar(1000);
+            //     break;
+            }
+            case 6 -> {
                     // try {
                     //     System.out.print("Placa del vehículo a rastrear: "); //validar vehiculo en rutas.txt
                     //     String placaa = scanner.nextLine();
@@ -177,8 +201,8 @@ public class Main {
                     // } catch (Exception e) {
                     //     System.out.println("Error al iniciar rastreo: " + e.getMessage());
                     // }
-            break;
-            case 7:
+            }
+            case 7 -> {
                 // try {
                 //     System.out.println("--- Registrar Evento de Ruta ---");
                 //     System.out.print("Fecha (dd/mm/aaaa): ");
@@ -211,8 +235,8 @@ public class Main {
                 // } catch (Exception e) {
                 //     System.out.println("Error al registrar el evento: " + e.getMessage());
                 // }
-            break; 
-            case 8:
+             }
+            case 8 -> {
 
         //Codigo con CHAT GPT XD ya me dio pereza esta parte asi que mñana la reviso
         //el codigo de chatgpt es para tener una referencia :v
@@ -289,8 +313,8 @@ public class Main {
     //         System.out.println("Error al guardar en archivo: " + e.getMessage());
     //     }
     // } 
-            break;
-            case 9:
+            }
+            case 9 -> {
 
     //         LO MISMO QUE EL 8 :V
     //         public static void generarReporteRuta() {
@@ -365,15 +389,14 @@ public class Main {
     //         System.out.println("Error al guardar en archivo: " + e.getMessage());
     //     }
     // }
-                break;
-            case 10:
+            }
+            case 10 -> {
                 System.out.println("Saliendo del programa...");
-                break;
-            default:
+            }
+            default -> {
                 System.out.println("Opción no válida");
                 scanner.nextLine();
-                
-                break;
+            }
         }
     } while(opcion != 10);
         scanner.close();

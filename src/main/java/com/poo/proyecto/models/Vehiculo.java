@@ -1,18 +1,19 @@
-package src.main.java.com.poo.proyecto.models;
+package com.poo.proyecto.models;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.regex.*;
 
 public class Vehiculo{
     private String placa;
     private String modelo;
     private String tipo;
-    private String capacidad_carga;
+    private int capacidad_carga;
     private boolean estado_operativo;
 
-    public Vehiculo(String placa, String modelo, String tipo, String capacidad_carga, boolean estado_operativo) {
+    public Vehiculo(String placa, String modelo, String tipo, int capacidad_carga, boolean  estado_operativo) {
         this.placa = placa;
         this.modelo = modelo;
         this.tipo = tipo;
@@ -20,18 +21,19 @@ public class Vehiculo{
         this.estado_operativo = estado_operativo;
     }
 
-    public static void almacenarVehiculo(Vehiculo vehiculo) {
-        File archivo = new File("vehiculos.txt");
+    public void almacenarVehiculo() {
+        String ruta = "src/main/java/com/poo/proyecto/resources/vehiculos.txt";
+        File archivo = new File(ruta);
         try (FileWriter writer = new FileWriter(archivo, true)) {
-            writer.write(vehiculo.getPlaca() + "," + vehiculo.getModelo() + "," + vehiculo.getTipo() + ","
-                    + vehiculo.getCapacidadCarga() + "," + (vehiculo.isEstadoOperativo() ? "1" : "0") + "\n");
+            writer.write(placa+ "," + modelo + "," + tipo + "," + capacidad_carga + "," + (estado_operativo ? "1" : "0") + "\n");
         } catch (IOException e) {
             System.out.println("Error al almacenar el vehiculo: " + e.getMessage());
         }
     }
 
     public static Vehiculo buscarVehiculoRegistrado(String placa) {
-        File archivo = new File("vehiculos.txt");
+        String ruta = "src/main/java/com/poo/proyecto/resources/vehiculos.txt";
+        File archivo = new File(ruta);
         try (Scanner scanner = new Scanner(archivo)) {
             while (scanner.hasNextLine()) {
                 String linea = scanner.nextLine();
@@ -39,7 +41,7 @@ public class Vehiculo{
                 if (datos[0].equals(placa)) {
                     String modelo = datos[1];
                     String tipo = datos[2];
-                    String capacidadCarga = datos[3];
+                    int capacidadCarga = Integer.parseInt(datos[3]);
                     boolean estadoOperativo = datos[4].equals("1");
                     return new Vehiculo(placa, modelo, tipo, capacidadCarga, estadoOperativo);
                 }
@@ -51,7 +53,8 @@ public class Vehiculo{
     }
 
     public void asignarConductor(Conductor conductor) {
-        File archivo = new File("asignaciones.txt");
+        String ruta = "src/main/java/com/poo/proyecto/resources/asignaciones.txt";
+        File archivo = new File(ruta);
         try (FileWriter writer = new FileWriter(archivo, true)) {
             writer.write(this.placa + "," + conductor.getCedula() + "\n");
         } catch (IOException e) {
@@ -69,7 +72,7 @@ public class Vehiculo{
     public String getTipo() {
         return tipo;
     }
-    public String getCapacidadCarga() {
+    public int  getCapacidadCarga() {
         return capacidad_carga;
     }
     public boolean isEstadoOperativo() {
@@ -77,18 +80,46 @@ public class Vehiculo{
     }
 
     // Setters
-    public void setPlaca(String placa) {
-        this.placa = placa;
+    public boolean setPlaca(String placa) {
+        String regex = "^[A-Z]{3}-[0-9]{4}$"; // Formato: AAA-0000
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(placa);
+        if (matcher.matches()) {
+            this.placa = placa;
+            return true;
+        } else {
+            System.out.println("Placa inválida. Debe seguir el formato AAA-0000.");
+            return false;
+        }
     }
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
+    public boolean setModelo(String modelo) {
+        if (modelo != null && !modelo.trim().isEmpty()) {
+            this.modelo = modelo;
+            return true;
+        } else {
+            System.out.println("Modelo inválido. No puede estar vacío.");
+            return false;
+        }
     }
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public boolean setTipo(String tipo) {
+        if (tipo != null && !tipo.trim().isEmpty()) {
+            this.tipo = tipo;
+            return true;
+        } else {
+            System.out.println("Tipo inválido. No puede estar vacío.");
+            return false;
+        }
     }
-    public void setCapacidadCarga(String capacidad_carga) {
-        this.capacidad_carga = capacidad_carga;
+    public boolean setCapacidadCarga(int capacidad_carga) {
+        if (capacidad_carga > 0) {
+            this.capacidad_carga = capacidad_carga;
+            return true;
+        } else {
+            System.out.println("Capacidad de carga inválida. Debe ser un número positivo.");
+            return false;
+        }
     }
+
     public void setEstadoOperativo(boolean estado_operativo) {
         this.estado_operativo = estado_operativo;
     }

@@ -1,0 +1,3 @@
+GTR-3773,Ford,SUV,40,1
+AAA-0000,Cayenne,SUV,400,1
+GTS-1234,Jaguar,Deportivo,300,1

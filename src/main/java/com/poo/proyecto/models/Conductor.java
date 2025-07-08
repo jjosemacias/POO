@@ -23,7 +23,8 @@ public class Conductor {
     }
 
     public void almacenarConductor() {
-        File archivo = new File("conductores.txt");
+        String ruta = "src/main/java/com/poo/proyecto/resources/conductores.txt";
+        File archivo = new File(ruta);
         try (FileWriter writer = new FileWriter(archivo, true)) {
             writer.write(nombre + "," + cedula + "," + licencia + "," + telefono + "," + correo + "\n");
         } catch (IOException e) {
@@ -32,7 +33,8 @@ public class Conductor {
     }
 
     public static Conductor conductorLibre() {
-    try (BufferedReader br = new BufferedReader(new FileReader("conductores.txt"))) {
+        String ruta = "src/main/java/com/poo/proyecto/resources/conductores.txt";
+    try (BufferedReader br = new BufferedReader(new FileReader(ruta))) {
         String linea;
         while ((linea = br.readLine()) != null) {
             String[] datos = linea.split(",");
@@ -40,7 +42,7 @@ public class Conductor {
                 String cedula = datos[1];
                 boolean asignado = false;
 
-                try (BufferedReader br2 = new BufferedReader(new FileReader("asignaciones.txt"))) {
+                try (BufferedReader br2 = new BufferedReader(new FileReader("src/main/java/com/poo/proyecto/resources/asignaciones.txt"))) {
                     String asignacion;
                     while ((asignacion = br2.readLine()) != null) {
                         String[] datosAsignacion = asignacion.split(",");
@@ -100,6 +102,7 @@ public class Conductor {
             this.cedula = cedula;
             return true;
         }
+        System.out.println("Cédula inválida. Debe tener 10 dígitos.");
         return false;
     }
 
@@ -110,10 +113,9 @@ public class Conductor {
         if (matcher.matches()) {
             this.licencia = licencia;
             return true;
-        } else {
-            System.out.println("Licencia inválida. Debe ser una letra entre A y F.");
-            return false;
-        }
+        } 
+        System.out.println("Licencia inválida. Debe ser una letra entre A y F.");
+        return false;
     }
 
     public boolean setTelefono(String telefono) {
@@ -136,7 +138,7 @@ public class Conductor {
             this.correo = correo;
             return true;
         }
-        System.out.println("Correo inválido.");
+        System.out.println("Correo electrónico inválido.");
         return false;
     }
 
