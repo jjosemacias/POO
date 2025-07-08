@@ -1,2 +1,2 @@
-GTR-3773|Ford Explorer 2013|SUV|50.0|Operativo
-AAA-0000|Ford|SUV|5.0|Operativo
+AAA-0000|suv|suv|4.0|Operativo
+FGH-7777|a|a|3.0|operativo

@@ -12,20 +12,10 @@ public class Asignacion {
         this.cedulaConductor = cedulaConductor;
     }
 
-    public String getPlacaVehiculo() {
-        return placaVehiculo;
-    }
-
-    public String getCedulaConductor() {
-        return cedulaConductor;
-    }
+    public String getPlacaVehiculo() { return placaVehiculo; }
+    public String getCedulaConductor() { return cedulaConductor; }
 
     public String toFileString() {
         return placaVehiculo + "|" + cedulaConductor;
-    }
-
-    @Override
-    public String toString() {
-        return "Vehículo: " + placaVehiculo + ", Conductor: " + cedulaConductor;
     }
 }

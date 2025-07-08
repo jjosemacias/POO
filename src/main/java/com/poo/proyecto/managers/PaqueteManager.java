@@ -1,33 +1,43 @@
 package com.poo.proyecto.managers;
 
 import com.poo.proyecto.models.Paquete;
+import com.poo.proyecto.utils.ValidadorUtils;
 import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PaqueteManager {
 
+    private static final String ARCHIVO_PAQUETES = "src/main/java/com/poo/proyecto/resources/paquetes.txt";
+    private static Set<String> paquetesRegistrados = new HashSet<>();
+
     public static void registrarPaquete(Paquete paquete) {
-        String archivo = "src/main/java/com/poo/proyecto/resources/paquetes.txt";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivo, true))) {
+        if (paquetesRegistrados.contains(paquete.getCodigo())) {
+            System.out.println("El paquete con código " + paquete.getCodigo() + " ya está registrado.");
+            ValidadorUtils.esperar(2000);
+            return;
+        }
+
+        if (!ValidadorUtils.esTelefonoValido(paquete.getTelefonoContacto())) {
+            System.out.println("El teléfono de contacto no es válido.");
+            ValidadorUtils.esperar(2000);
+            return;
+        }
+
+        // Guardar el paquete en el archivo
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_PAQUETES, true))) {
             writer.write(paquete.toFileString());
             writer.newLine();
+            paquetesRegistrados.add(paquete.getCodigo());
             System.out.println("Paquete registrado exitosamente.");
         } catch (IOException e) {
-            System.out.println("Error al registrar paquete: " + e.getMessage());
+            System.out.println("Error al registrar el paquete: " + e.getMessage());
         }
+        ValidadorUtils.esperar(2000);
     }
 
     public static boolean existePaquete(String codigo) {
-        String archivo = "src/main/java/com/poo/proyecto/resources/paquetes.txt";
-        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                if (linea.startsWith(codigo + "|")) {
-                    return true;
-                }
-            }
-        } catch (IOException e) {
-            // archivo no existe aún, está bien
-        }
-        return false;
+        // Verificar si un paquete existe en el conjunto de paquetes registrados
+        return paquetesRegistrados.contains(codigo);
     }
 }

@@ -12,7 +12,7 @@ public class Conductor {
         if (cedula == null || cedula.isBlank()) throw new IllegalArgumentException("La cédula no puede estar vacía.");
         if (licencia == null || licencia.isBlank()) throw new IllegalArgumentException("La licencia no puede estar vacía.");
         if (telefono == null || telefono.isBlank()) throw new IllegalArgumentException("El teléfono no puede estar vacío.");
-        if (correo == null || correo.isBlank() || !correo.contains("@")) throw new IllegalArgumentException("Correo inválido.");
+        if (correo == null || correo.isBlank()) throw new IllegalArgumentException("El correo no puede estar vacío.");
 
         this.nombre = nombre;
         this.cedula = cedula;
@@ -21,33 +21,13 @@ public class Conductor {
         this.correo = correo;
     }
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public String getLicencia() {
-        return licencia;
-    }
-
-    public String getTelefono() {
-        return telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
+    public String getNombre() { return nombre; }
+    public String getCedula() { return cedula; }
+    public String getLicencia() { return licencia; }
+    public String getTelefono() { return telefono; }
+    public String getCorreo() { return correo; }
 
     public String toFileString() {
         return nombre + "|" + cedula + "|" + licencia + "|" + telefono + "|" + correo;
-    }
-
-    @Override
-    public String toString() {
-        return "Nombre: " + nombre + ", Cédula: " + cedula + ", Licencia: " + licencia +
-               ", Teléfono: " + telefono + ", Correo: " + correo;
     }
 }

@@ -17,69 +17,22 @@ public class Ruta {
         setCodigosPaquetes(codigosPaquetes);
     }
 
-    public String getCodigoRuta() {
-        return codigoRuta;
-    }
+    public String getCodigoRuta() { return codigoRuta; }
+    public void setCodigoRuta(String codigoRuta) { this.codigoRuta = codigoRuta; }
 
-    public void setCodigoRuta(String codigoRuta) {
-        if (codigoRuta == null || codigoRuta.isBlank()) {
-            throw new IllegalArgumentException("El código de ruta no puede estar vacío.");
-        }
-        this.codigoRuta = codigoRuta;
-    }
+    public String getFecha() { return fecha; }
+    public void setFecha(String fecha) { this.fecha = fecha; }
 
-    public String getFecha() {
-        return fecha;
-    }
+    public String getPlacaVehiculo() { return placaVehiculo; }
+    public void setPlacaVehiculo(String placaVehiculo) { this.placaVehiculo = placaVehiculo; }
 
-    public void setFecha(String fecha) {
-        if (fecha == null || fecha.isBlank()) {
-            throw new IllegalArgumentException("La fecha no puede estar vacía.");
-        }
-        this.fecha = fecha;
-    }
+    public String getCedulaConductor() { return cedulaConductor; }
+    public void setCedulaConductor(String cedulaConductor) { this.cedulaConductor = cedulaConductor; }
 
-    public String getPlacaVehiculo() {
-        return placaVehiculo;
-    }
-
-    public void setPlacaVehiculo(String placaVehiculo) {
-        if (placaVehiculo == null || placaVehiculo.isBlank()) {
-            throw new IllegalArgumentException("La placa del vehículo no puede estar vacía.");
-        }
-        this.placaVehiculo = placaVehiculo;
-    }
-
-    public String getCedulaConductor() {
-        return cedulaConductor;
-    }
-
-    public void setCedulaConductor(String cedulaConductor) {
-        if (cedulaConductor == null || cedulaConductor.isBlank()) {
-            throw new IllegalArgumentException("La cédula del conductor no puede estar vacía.");
-        }
-        this.cedulaConductor = cedulaConductor;
-    }
-
-    public List<String> getCodigosPaquetes() {
-        return codigosPaquetes;
-    }
-
-    public void setCodigosPaquetes(List<String> codigosPaquetes) {
-        if (codigosPaquetes == null || codigosPaquetes.isEmpty()) {
-            throw new IllegalArgumentException("Debe haber al menos un paquete en la ruta.");
-        }
-        this.codigosPaquetes = codigosPaquetes;
-    }
+    public List<String> getCodigosPaquetes() { return codigosPaquetes; }
+    public void setCodigosPaquetes(List<String> codigosPaquetes) { this.codigosPaquetes = codigosPaquetes; }
 
     public String toFileString() {
-        String paquetes = String.join(",", codigosPaquetes);
-        return codigoRuta + "|" + fecha + "|" + placaVehiculo + "|" + cedulaConductor + "|" + paquetes;
-    }
-
-    @Override
-    public String toString() {
-        return "Ruta: " + codigoRuta + ", Fecha: " + fecha + ", Vehículo: " + placaVehiculo +
-               ", Conductor: " + cedulaConductor + ", Paquetes: " + String.join(", ", codigosPaquetes);
+        return codigoRuta + "|" + fecha + "|" + placaVehiculo + "|" + cedulaConductor + "|" + String.join(",", codigosPaquetes);
     }
 }

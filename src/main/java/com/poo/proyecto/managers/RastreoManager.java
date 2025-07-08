@@ -1,6 +1,7 @@
 package com.poo.proyecto.managers;
 
 import com.poo.proyecto.models.Rastreo;
+import com.poo.proyecto.utils.ValidadorUtils;
 import java.io.*;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +13,7 @@ public class RastreoManager {
 
         if (rastreoYaIniciado(codigoRuta)) {
             System.out.println("Ya se ha iniciado el rastreo para esta ruta.");
+            ValidadorUtils.esperar(2000);
             return;
         }
 
@@ -25,6 +27,7 @@ public class RastreoManager {
         } catch (IOException e) {
             System.out.println("Error al iniciar rastreo: " + e.getMessage());
         }
+        ValidadorUtils.esperar(2000);
     }
 
     public static boolean rastreoYaIniciado(String codigoRuta) {

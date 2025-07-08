@@ -1,73 +1,69 @@
 package com.poo.proyecto.managers;
 
+import com.poo.proyecto.models.Ruta;
+import com.poo.proyecto.utils.ValidadorUtils;
 import java.io.*;
-import java.util.*;
+import java.util.ArrayList;  // Asegúrate de importar la clase Ruta
+import java.util.List;
 
 public class ReporteRutaManager {
 
     public static void generarReporteRuta(String codigoRuta) {
-        String rutasFile = "src/main/java/com/poo/proyecto/resources/rutas.txt";
-        String eventosFile = "src/main/java/com/poo/proyecto/resources/eventosRuta.txt";
-        String reporteFile = "src/main/java/com/poo/proyecto/resources/reportes.txt";
+        // Obtener las rutas desde el manager
+        List<Ruta> rutas = RutaManager.listarRutas();
+        List<String> eventos = obtenerEventos(codigoRuta);
+        List<String> rastreo = obtenerRastreo(codigoRuta);
 
-        int entregasExitosas = 0;
-        int entregasFallidas = 0; // Esto se puede ajustar si hay eventos de fallas
-        int totalEventos = 0;
-        String conductor = "Desconocido";
-        // Buscar detalles de la ruta
-        try (BufferedReader br = new BufferedReader(new FileReader(rutasFile))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                if (linea.contains(codigoRuta)) {
-                    String[] partes = linea.split("\\|");
-                    if (partes.length >= 3) {
-                        conductor = partes[2].trim();
-                    }
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error leyendo rutas.txt: " + e.getMessage());
-        }
+        long entregasExitosas = 0;
+        long entregasFallidas = 0;
+        long tiempoTotalRuta = 0;
 
-        // Buscar eventos de la ruta
-        List<String> eventos = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(eventosFile))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                if (linea.contains(codigoRuta)) {
-                    eventos.add(linea);
-                    totalEventos++;
-                    if (linea.contains("Entrega realizada")) {
-                        entregasExitosas++;
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error leyendo eventosRuta.txt: " + e.getMessage());
-        }
+        // Lógica para contar entregas exitosas, fallidas y calcular el tiempo total en ruta.
+        // Puedes añadir la lógica específica de cómo manejar los eventos y rastreo para obtener estas métricas.
 
-        // Mostrar por consola
-        System.out.println("\n--- Reporte de Ruta: " + codigoRuta + " ---");
-        System.out.println("Conductor: " + conductor);
-        System.out.println("Entregas exitosas: " + entregasExitosas);
-        System.out.println("Entregas fallidas: " + entregasFallidas); // Puedes ajustar si se detectan fallos
-        System.out.println("Eventos registrados: " + totalEventos);
+        System.out.println("Reporte de la Ruta: " + codigoRuta);
+        System.out.println("Entregas Exitosas: " + entregasExitosas);
+        System.out.println("Entregas Fallidas: " + entregasFallidas);
+        System.out.println("Tiempo Total en Ruta: " + tiempoTotalRuta + " segundos");
+        System.out.println("Eventos Registrados:");
         eventos.forEach(System.out::println);
+        System.out.println("Rastreo:");
+        rastreo.forEach(System.out::println);
 
-        // Guardar en archivo
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(reporteFile, true))) {
-            bw.write("Reporte Ruta: " + codigoRuta + "\n");
-            bw.write("Conductor: " + conductor + "\n");
-            bw.write("Entregas exitosas: " + entregasExitosas + "\n");
-            bw.write("Entregas fallidas: " + entregasFallidas + "\n");
-            bw.write("Eventos registrados: " + totalEventos + "\n");
-            for (String ev : eventos) {
-                bw.write(ev + "\n");
+        ValidadorUtils.esperar(2000);
+    }
+
+    private static List<String> obtenerEventos(String codigoRuta) {
+        List<String> eventos = new ArrayList<>();
+        String archivoEventos = "src/main/java/com/poo/proyecto/resources/eventosRuta.txt";
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivoEventos))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.startsWith(codigoRuta + "|")) {
+                    eventos.add(linea);
+                }
             }
-            bw.write("\n");
         } catch (IOException e) {
-            System.out.println("Error escribiendo el reporte: " + e.getMessage());
+            System.out.println("Error al leer eventos: " + e.getMessage());
         }
+        return eventos;
+    }
+
+    private static List<String> obtenerRastreo(String codigoRuta) {
+        List<String> rastreo = new ArrayList<>();
+        String archivoRastreo = "src/main/java/com/poo/proyecto/resources/rastreo.txt";
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivoRastreo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                if (linea.startsWith(codigoRuta + "|")) {
+                    rastreo.add(linea);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer rastreo: " + e.getMessage());
+        }
+        return rastreo;
     }
 }
