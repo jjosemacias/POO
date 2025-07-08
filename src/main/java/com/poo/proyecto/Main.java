@@ -1,4 +1,5 @@
-package src.main.java.com.poo.proyecto.main;
+package src.main.java.com.poo.proyecto;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
