@@ -6,4 +6,4 @@
 <p>Uso de regex, como recomendo samuel para diferentes validaciones</p>
 
 
-<p>En clase Main se ha corregido exitosamente hasta el caso 6</p>
+<p>En clase Main se ha implementado correctamente todos los casos (falta revision final)</p>
