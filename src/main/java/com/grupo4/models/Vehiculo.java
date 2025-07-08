@@ -2,7 +2,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
-import java.io.RandomAccessFile;
 
 public class Vehiculo{
     private String placa;
@@ -29,7 +28,7 @@ public class Vehiculo{
         }
     }
 
-    public static Vehiculo buscarVehiculo(String placa) {
+    public static Vehiculo buscarVehiculoRegistrado(String placa) {
         File archivo = new File("vehiculos.txt");
         try (Scanner scanner = new Scanner(archivo)) {
             while (scanner.hasNextLine()) {
@@ -57,37 +56,49 @@ public class Vehiculo{
             System.out.println("Error al asignar el conductor al vehiculo: " + e.getMessage());
         }
     }
-
-
-    // Getters y Setters
+    
+    // Getters
     public String getPlaca() {
         return placa;
-    }
-    public void setPlaca(String placa) {
-        this.placa = placa;
     }
     public String getModelo() {
         return modelo;
     }
-    public void setModelo(String modelo) {
-        this.modelo = modelo;
-    }
     public String getTipo() {
         return tipo;
-    }
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
     }
     public String getCapacidadCarga() {
         return capacidad_carga;
     }
-    public void setCapacidadCarga(String capacidad_carga) {
-        this.capacidad_carga = capacidad_carga;
-    }
     public boolean isEstadoOperativo() {
         return estado_operativo;
     }
+
+    // Setters
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+    public void setCapacidadCarga(String capacidad_carga) {
+        this.capacidad_carga = capacidad_carga;
+    }
     public void setEstadoOperativo(boolean estado_operativo) {
         this.estado_operativo = estado_operativo;
+    }
+
+    @Override
+    public String toString() {
+        return "Vehiculo{" +
+                "placa='" + placa + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", tipo='" + tipo + '\'' +
+                ", capacidad_carga='" + capacidad_carga + '\'' +
+                ", estado_operativo=" + estado_operativo +
+                '}';
     }
 }

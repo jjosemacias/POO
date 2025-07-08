@@ -3,8 +3,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
-import java.io.RandomAccessFile;
 
 public class Paquete {
     private String id;
