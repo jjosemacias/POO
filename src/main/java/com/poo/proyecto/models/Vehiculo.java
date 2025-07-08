@@ -1,3 +1,5 @@
+package src.main.java.com.poo.proyecto.models;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
