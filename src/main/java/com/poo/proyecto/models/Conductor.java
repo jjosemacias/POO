@@ -1,11 +1,11 @@
-package src.main.java.com.poo.proyecto.models;
-
-
+package com.poo.proyecto.models;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.*;
+
 
 public class Conductor {
     private String nombre;
@@ -22,11 +22,10 @@ public class Conductor {
         this.correo = correo;
     }
 
-    public void almacenarConductor(Conductor conductor) {
+    public void almacenarConductor() {
         File archivo = new File("conductores.txt");
         try (FileWriter writer = new FileWriter(archivo, true)) {
-            writer.write(conductor.getNombre() + "," + conductor.getCedula() + "," + conductor.getLicencia() + ","
-                    + conductor.getTelefono() + "," + conductor.getCorreo() + "\n");
+            writer.write(nombre + "," + cedula + "," + licencia + "," + telefono + "," + correo + "\n");
         } catch (IOException e) {
             System.out.println("Error al almacenar el conductor: " + e.getMessage());
         }
@@ -67,44 +66,89 @@ public class Conductor {
 }
 
 
-    //getter y setters
+    // Getters
     public String getNombre() {
         return nombre;
     }
-    
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-    
+
     public String getCedula() {
         return cedula;
     }
-    
-    public void setCedula(String cedula) {
-        this.cedula = cedula;
-    }
-    
+
     public String getLicencia() {
         return licencia;
     }
-    
-    public void setLicencia(String licencia) {
-        this.licencia = licencia;
-    }
-    
+
     public String getTelefono() {
         return telefono;
     }
-    
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+
     public String getCorreo() {
         return correo;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
+    // Setters
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public boolean setCedula(String cedula) {
+        String regex = "^[0-9]{10}$"; // Regex para validar cédula ecuatoriana
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cedula);
+        if (matcher.matches()) {
+            this.cedula = cedula;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean setLicencia(String licencia) {
+        String regex = "^[A-Fa-f]$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(licencia);
+        if (matcher.matches()) {
+            this.licencia = licencia;
+            return true;
+        } else {
+            System.out.println("Licencia inválida. Debe ser una letra entre A y F.");
+            return false;
+        }
+    }
+
+    public boolean setTelefono(String telefono) {
+        String regex = "^[0-9]{10}$"; // Regex para validar teléfono ecuatoriano
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(telefono);
+        if (matcher.matches()) {
+            this.telefono = telefono;
+            return true;
+        }
+        System.out.println("Teléfono inválido. Debe tener 10 dígitos.");
+        return false;
+    }
+
+    public boolean setCorreo(String correo) {
+        String regex = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z]{2,}$"; // Regex para validar correo electrónico
+        Pattern pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(correo);
+        if (matcher.matches()) {
+            this.correo = correo;
+            return true;
+        }
+        System.out.println("Correo inválido.");
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Conductor{" +
+                "nombre='" + nombre + '\'' +
+                ", cedula='" + cedula + '\'' +
+                ", licencia='" + licencia + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", correo='" + correo + '\'' +
+                '}';
     }
 
 }

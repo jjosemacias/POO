@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
+import src.main.java.com.poo.proyecto.models.Conductor;
 import src.main.java.com.poo.proyecto.models.Paquete;
 import src.main.java.com.poo.proyecto.models.Vehiculo;
 
