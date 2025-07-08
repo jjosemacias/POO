@@ -1,10 +1,8 @@
 package com.poo.proyecto;
-
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Scanner;
-
-import com.poo.proyecto.models.Conductor;
-import com.poo.proyecto.models.Vehiculo;
-
+import com.poo.proyecto.models.*;
 
 
 public class Main {
@@ -125,35 +123,84 @@ public class Main {
                   }
                   scanner.nextLine();
                   esperar(1000);
-                  break;
-            }
+                }
+
             case 4 -> {
-            //     System.out.println("-Registrar Paquete-");
-            //     System.out.print("ID: ");
-            //     String id = scanner.next();
-            //     scanner.nextLine();
-            //     System.out.print("Descripcion: ");
-            //     String descripcion = scanner.next();
-            //     scanner.nextLine();
-            //     System.out.print("Peso: ");
-            //     String peso = scanner.next();
-            //     scanner.nextLine();
-            //     System.out.print("Destinatario: ");
-            //     String destinatario = scanner.next();
-            //     scanner.nextLine();
-            //     System.out.print("Direccion: ");
-            //     String direccion = scanner.next();
-            //     scanner.nextLine();
-            //     System.out.print("Telefono de contacto: ");
-            //     int telefono_contacto = scanner.nextInt();
-            //     scanner.nextLine();
-            //     Paquete paquete = new Paquete(id,descripcion,peso,destinatario,direccion,telefono_contacto);
-            //     Paquete.almacenarPaquete(paquete);
-            //     System.out.print("Paquete registrado exitosamente.");
-            //     esperar(1000);
+                System.out.println("-Registrar Paquete-");
+                Paquete paquete = new Paquete("","",0,"","","");
+                while(true){
+                    System.out.print("ID del paquete: ");
+                    String id = scanner.nextLine();
+                    if(paquete.setId(id)) break;
+                }
+                while(true){
+                    System.out.print("Descripción del paquete: ");
+                    String descripcion = scanner.nextLine();
+                    if(paquete.setDescripcion(descripcion)) break;
+                }
+                while(true){
+                    System.out.print("Peso del paquete [kg]: ");
+                    int peso = scanner.nextInt();
+                    scanner.nextLine(); // Limpiar el buffer del scanner
+                    if(paquete.setPeso(peso)) break;
+                }
+                while(true){
+                    System.out.print("Destinatario del paquete: ");
+                    String destinatario = scanner.nextLine();
+                    if(paquete.setDestinatario(destinatario)) break;
+                }
+                while(true){
+                    System.out.print("Dirección del paquete: ");
+                    String direccion = scanner.nextLine();
+                    if(paquete.setDireccion(direccion)) break;
+                }
+                while(true){
+                    System.out.print("Teléfono de contacto: ");
+                    String telefono = scanner.nextLine();
+                    if(paquete.setTelefonoContacto(telefono)) break;
+                }
+                paquete.almacenarPaquete();
+                System.out.print("Paquete registrado exitosamente.");
+                scanner.nextLine();
+                esperar(1000);
             }
             case 5 -> {
-            // System.out.println("-Crear Ruta de Entrega-");
+            System.out.println("-Crear Ruta de Entrega-");
+            ArrayList<String> codigosPaquetes = new ArrayList<>();
+            Ruta ruta = new Ruta("","","",codigosPaquetes);
+            while(true){
+                System.out.print("Fecha de la ruta (dd/MM/yyyy): ");
+                String fecha = scanner.nextLine();
+                if (ruta.setFecha(fecha)) break;
+            }
+            while(true){
+                System.out.print("Placa del vehículo asignado: ");
+                String placaVehiculo = scanner.nextLine();
+                if (ruta.setPlacaVehiculo(placaVehiculo)) break;
+            }
+            while (true) {
+                System.out.print("Ingrese código de paquete (escriba 'fin' para terminar): ");
+                String codigo = scanner.nextLine();
+                if (codigo.trim().isEmpty()) {
+                    System.out.println("El código no puede estar vacío. Intente nuevamente.");
+                    continue;
+                }
+
+                if (codigo.equalsIgnoreCase("fin")) break;
+
+                if (Paquete.buscarPaqueteRegistrado(codigo)) {
+                    codigosPaquetes.add(codigo);
+                    System.out.println("Paquete añadido.");
+                } else {
+                    System.out.println("El código de paquete no está registrado.");
+
+                }
+            }
+            ruta.setCodigosPaquetes(codigosPaquetes);
+            ruta.almacenarRuta();
+
+
+
             //     SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             //     sdf.setLenient(false);
             //     String fecha_string_final = "";

@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.*;
+import com.poo.proyecto.models.Conductor;
 
 public class Vehiculo{
     private String placa;
@@ -60,6 +61,41 @@ public class Vehiculo{
         } catch (IOException e) {
             System.out.println("Error al asignar el conductor al vehiculo: " + e.getMessage());
         }
+    }
+    public static boolean verificarConductorAsignado(String placa) {
+        String ruta = "src/main/java/com/poo/proyecto/resources/asignaciones.txt";
+        File archivo = new File(ruta);
+        try (Scanner scanner = new Scanner(archivo)) {
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] datos = linea.split(",");
+                if (datos[0].equals(placa)) {
+                    return true; // El vehículo tiene un conductor asignado
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al verificar la asignación del conductor: " + e.getMessage());
+        }
+        System.out.println("El vehículo con placa " + placa + " no tiene un conductor asignado.");
+        return false; // El vehículo no tiene un conductor asignado
+    }
+
+    public static String ConductorAsignado(String placa) {
+        String ruta = "src/main/java/com/poo/proyecto/resources/asignaciones.txt";
+        File archivo = new File(ruta);
+        try (Scanner scanner = new Scanner(archivo)) {
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] datos = linea.split(",");
+                if (datos[0].equals(placa)) {
+                    return datos[1]; // Retorna la cédula del conductor asignado
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al verificar la asignación del conductor: " + e.getMessage());
+        }
+        System.out.println("El vehículo con placa " + placa + " no tiene un conductor asignado.");
+        return null;
     }
     
     // Getters
