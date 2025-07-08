@@ -11,26 +11,6 @@ public class RutaManager {
     private static final String ARCHIVO = "src/main/java/com/poo/proyecto/resources/rutas.txt";
 
     public static void crearRuta(Ruta ruta) {
-        if (!ValidadorUtils.esPlacaValida(ruta.getPlacaVehiculo())) {
-            System.out.println("La placa del vehículo no es válida.");
-            ValidadorUtils.esperar(2000);
-            return;
-        }
-
-        // Verificar que la ruta no exista
-        if (existeRuta(ruta.getCodigoRuta())) {
-            System.out.println("Ya existe una ruta con ese código.");
-            ValidadorUtils.esperar(2000);
-            return;
-        }
-
-        // Verificar existencia de los paquetes
-        if (!verificarPaquetesExistentes(ruta.getCodigosPaquetes())) {
-            System.out.println("Uno o más paquetes no existen.");
-            ValidadorUtils.esperar(2000);
-            return;
-        }
-
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO, true))) {
             writer.write(ruta.toFileString());
             writer.newLine();
@@ -41,9 +21,21 @@ public class RutaManager {
         ValidadorUtils.esperar(2000);
     }
 
-    public static boolean existeRuta(String codigoRuta) {
-        return listarRutas().stream()
-                .anyMatch(r -> r.getCodigoRuta().equalsIgnoreCase(codigoRuta));
+    public static boolean existeRuta(String codigoRuta){
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length > 0 && partes[0].equalsIgnoreCase(codigoRuta)) {
+                    System.out.println("La ruta con código " + codigoRuta + " ya está registrada.");
+                    return true; // La ruta ya está registrada
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo de rutas: " + e.getMessage());
+        }
+        System.out.println("La ruta con código " + codigoRuta + " no está registrada.");
+        return false;
     }
 
     public static List<Ruta> listarRutas() {

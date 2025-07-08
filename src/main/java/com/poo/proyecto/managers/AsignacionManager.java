@@ -1,25 +1,18 @@
 package com.poo.proyecto.managers;
 
+import com.poo.proyecto.models.Asignacion;
 import com.poo.proyecto.utils.ValidadorUtils;
 import java.io.*;
 
 public class AsignacionManager {
 
-    public static void asignarVehiculoAConductor(String placaVehiculo, String cedulaConductor) {
-        String archivoVehiculos = "src/main/java/com/poo/proyecto/resources/vehiculos.txt";
-        String archivoConductores = "src/main/java/com/poo/proyecto/resources/conductores.txt";
+    public static void asignarVehiculoAConductor(Asignacion asignacion) {
         String archivoAsignaciones = "src/main/java/com/poo/proyecto/resources/asignaciones.txt";
-
-        // Verificar si el vehículo y conductor existen y si el vehículo está operativo
-        if (!existeVehiculo(placaVehiculo) || !existeConductor(cedulaConductor) || !vehiculoDisponible(placaVehiculo)) {
-            System.out.println("No se puede asignar el vehículo al conductor. Verifique los datos.");
-            ValidadorUtils.esperar(2000);
-            return;
-        }
 
         // Guardar la asignación
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(archivoAsignaciones, true))) {
-            writer.write(placaVehiculo + "|" + cedulaConductor + "\\n");
+            writer.write(asignacion.toFileString());
+            writer.newLine();
             System.out.println("Vehículo asignado al conductor exitosamente.");
         } catch (IOException e) {
             System.out.println("Error al registrar la asignación: " + e.getMessage());
@@ -27,18 +20,52 @@ public class AsignacionManager {
         ValidadorUtils.esperar(2000);
     }
 
-    private static boolean existeVehiculo(String placa) {
-        // Lógica para verificar si el vehículo existe en 'vehiculos.txt'
-        return true;
+    public static boolean existePlacaAsignada(String placa) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/poo/proyecto/resources/asignaciones.txt"))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length > 0 && partes[0].equalsIgnoreCase(placa)) {
+                    System.out.println("La placa " + placa + " ya está asignada con conductor cédula " + partes[1] + ".");
+                    return true; // La placa ya está asignada
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo de vehículos: " + e.getMessage());
+        }
+        System.out.println("La placa " + placa + " no está asignada.");
+        return false; // La placa no está asignada
+    }
+    public static boolean existeCedulaAsignada(String cedula) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/poo/proyecto/resources/asignaciones.txt"))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length > 1 && partes[1].equals(cedula)) {
+                    System.out.println("La cédula " + cedula + " ya está asignada.");
+                    return true; // La cédula ya está asignada
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo de asignaciones: " + e.getMessage());
+        }
+
+        return false; // La cédula no está asignada
+    }
+    public static String obtenerCedulaAsignada(String placa) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("src/main/java/com/poo/proyecto/resources/asignaciones.txt"))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length > 1 && partes[0].equalsIgnoreCase(placa)) {
+                    return partes[1]; // Retorna la cédula asignada
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo de asignaciones: " + e.getMessage());
+        }
+
+        return null; // No se encontró la placa
     }
 
-    private static boolean existeConductor(String cedula) {
-        // Lógica para verificar si el conductor existe en 'conductores.txt'
-        return true;
-    }
-
-    private static boolean vehiculoDisponible(String placa) {
-        // Lógica para verificar si el vehículo está operativo
-        return true;
-    }
 }

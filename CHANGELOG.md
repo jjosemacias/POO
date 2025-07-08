@@ -7,3 +7,7 @@
 
 
 <p>En clase Main se ha corregido exitosamente hasta el caso 6</p>
+
+### version 8.07.03
+<p>Revision de Main, faltan validar correctamente case 8, 9</p>
+<p>j</p>

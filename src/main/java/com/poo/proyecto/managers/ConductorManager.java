@@ -27,4 +27,21 @@ public class ConductorManager {
         }
         ValidadorUtils.esperar(2000);
     }
+
+    public static boolean existeCedulaRegistrada(String cedula) {
+        String archivo = "src/main/java/com/poo/proyecto/resources/conductores.txt";
+        try (BufferedReader reader = new BufferedReader(new FileReader(archivo))) {
+            String linea;
+            while ((linea = reader.readLine()) != null) {
+                String[] partes = linea.split("\\|");
+                if (partes.length > 1 && partes[1].equals(cedula)) {
+                    return true; // La cédula ya está registrada
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error al leer el archivo de conductores: " + e.getMessage());
+        }
+        System.out.println("La cédula no está registrada.");
+        return false; // La cédula no está registrada
+    }
 }

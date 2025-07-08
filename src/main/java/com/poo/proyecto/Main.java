@@ -100,39 +100,40 @@ public class Main {
     }
 
     private static void registrarConductor(Scanner scanner) {
-    // Validar nombre (no vacío)
-    String nombre = "";
+
+    System.out.print("Ingrese el nombre del conductor: ");
+    String nombre = scanner.nextLine();
     while (!ValidadorUtils.esCadenaNoVacia(nombre)) {
         System.out.print("Ingrese el nombre del conductor: ");
         nombre = scanner.nextLine();
     }
 
     // Validar cédula (no vacío y formato válido)
-    String cedula = "";
-    while (!ValidadorUtils.esCadenaNoVacia(cedula)) {
-                System.out.print("No puede ser vacio: ");
-                cedula = scanner.nextLine();
-        while(!ValidadorUtils.esCedulaValida(cedula)){
-            System.out.print("Ingrese la cédula del conductor (10 dígitos): ");
-            cedula = scanner.nextLine();
-    }
+    System.out.print("Ingrese la cédula del conductor (Formato: 1234567890): ");
+    String cedula = scanner.nextLine();
+    while (!ValidadorUtils.esCadenaNoVacia(cedula) || !ValidadorUtils.esCedulaValida(cedula)) {
+        System.out.print("Ingrese la cédula del conductor (Formato: 1234567890): ");
+        cedula = scanner.nextLine();
     }
     // Validar licencia (no vacío y formato válido)
-    String licencia = "";
+    System.out.print("Ingrese la licencia del conductor (A, A1, B, C1, C, D1, D, E1, E, F, G): ");
+    String licencia = scanner.nextLine();
     while (!ValidadorUtils.esCadenaNoVacia(licencia) || !ValidadorUtils.esLicenciaValida(licencia)) {
         System.out.print("Ingrese la licencia del conductor (A, A1, B, C1, C, D1, D, E1, E, F, G): ");
         licencia = scanner.nextLine();
     }
 
     // Validar teléfono (no vacío y formato válido)
-    String telefono = "";
+    System.out.print("Ingrese el teléfono del conductor (10 dígitos): ");
+    String telefono = scanner.nextLine();
     while (!ValidadorUtils.esCadenaNoVacia(telefono) || !ValidadorUtils.esTelefonoValido(telefono)) {
         System.out.print("Ingrese el teléfono del conductor (10 dígitos): ");
         telefono = scanner.nextLine();
     }
 
     // Validar correo (no vacío y formato válido)
-    String correo = "";
+    System.out.print("Ingrese el correo del conductor: ");
+    String correo = scanner.nextLine();
     while (!ValidadorUtils.esCadenaNoVacia(correo) || !ValidadorUtils.esCorreoValido(correo)) {
         System.out.print("Ingrese el correo del conductor: ");
         correo = scanner.nextLine();
@@ -146,32 +147,34 @@ public class Main {
     private static void asignarVehiculoAConductor(Scanner scanner) {
         System.out.print("Ingrese la placa del vehículo: ");
         String placaVehiculo = scanner.nextLine();
-        while (placaVehiculo.isEmpty()) {
+        while (!ValidadorUtils.esCadenaNoVacia(placaVehiculo) || !VehiculoManager.existePlacaRegistrada(placaVehiculo) || AsignacionManager.existePlacaAsignada(placaVehiculo)) {
             System.out.print("Ingrese la placa del vehículo: ");
             placaVehiculo = scanner.nextLine();
         }
 
         System.out.print("Ingrese la cédula del conductor: ");
         String cedulaConductor = scanner.nextLine();
-        while (cedulaConductor.isEmpty()) {
+        while (!ValidadorUtils.esCadenaNoVacia(cedulaConductor) || !ValidadorUtils.esCedulaValida(cedulaConductor) || !ConductorManager.existeCedulaRegistrada(cedulaConductor) || AsignacionManager.existeCedulaAsignada(cedulaConductor)) {
             System.out.print("Ingrese la cédula del conductor: ");
             cedulaConductor = scanner.nextLine();
         }
+        Asignacion asignacion = new Asignacion(placaVehiculo, cedulaConductor);
 
-        AsignacionManager.asignarVehiculoAConductor(placaVehiculo, cedulaConductor);
+        AsignacionManager.asignarVehiculoAConductor(asignacion);
     }
 
     private static void registrarPaquete(Scanner scanner) {
+
         System.out.print("Ingrese el código del paquete: ");
         String codigo = scanner.nextLine();
-        while (codigo.isEmpty()) {
+        while (!ValidadorUtils.esCadenaNoVacia(codigo) || PaqueteManager.existePaquete(codigo) ) {
             System.out.print("Ingrese el código del paquete: ");
             codigo = scanner.nextLine();
         }
 
         System.out.print("Ingrese la descripción del paquete: ");
         String descripcion = scanner.nextLine();
-        while (descripcion.isEmpty()) {
+        while (!ValidadorUtils.esCadenaNoVacia(descripcion)) {
             System.out.print("Ingrese la descripción del paquete: ");
             descripcion = scanner.nextLine();
         }
@@ -189,12 +192,24 @@ public class Main {
 
         System.out.print("Ingrese el destinatario del paquete: ");
         String destinatario = scanner.nextLine();
+        while (!ValidadorUtils.esCadenaNoVacia(destinatario)) {
+            System.out.print("Ingrese el destinatario del paquete: ");
+            destinatario = scanner.nextLine();
+        }
 
         System.out.print("Ingrese la dirección de entrega: ");
         String direccion = scanner.nextLine();
+        while (!ValidadorUtils.esCadenaNoVacia(direccion)) {
+            System.out.print("Ingrese la dirección de entrega: ");
+            direccion = scanner.nextLine();
+        }
 
         System.out.print("Ingrese el teléfono de contacto: ");
         String telefonoContacto = scanner.nextLine();
+        while (!ValidadorUtils.esCadenaNoVacia(telefonoContacto) || !ValidadorUtils.esTelefonoValido(telefonoContacto)) {
+            System.out.print("Ingrese el teléfono de contacto: ");
+            telefonoContacto = scanner.nextLine();
+        }
 
         Paquete paquete = new Paquete(codigo, descripcion, peso, destinatario, direccion, telefonoContacto);
         PaqueteManager.registrarPaquete(paquete);
@@ -203,19 +218,25 @@ public class Main {
     private static void crearRuta(Scanner scanner) {
         System.out.print("Ingrese el código de la ruta: ");
         String codigoRuta = scanner.nextLine();
-        while (codigoRuta.isEmpty()) {
+        while (!ValidadorUtils.esCadenaNoVacia(codigoRuta) || RutaManager.existeRuta(codigoRuta)) {
             System.out.print("Ingrese el código de la ruta: ");
             codigoRuta = scanner.nextLine();
         }
 
         System.out.print("Ingrese la fecha de la ruta (dd/mm/yyyy): ");
         String fecha = scanner.nextLine();
+        while(!ValidadorUtils.esFechaValida(fecha)) {
+            System.out.print("Ingrese la fecha de la ruta (dd/mm/yyyy): ");
+            fecha = scanner.nextLine();
+        }
 
         System.out.print("Ingrese la placa del vehículo: ");
         String placaVehiculo = scanner.nextLine();
-
-        System.out.print("Ingrese la cédula del conductor: ");
-        String cedulaConductor = scanner.nextLine();
+        while(!ValidadorUtils.esCadenaNoVacia(placaVehiculo) || !VehiculoManager.existePlacaRegistrada(placaVehiculo) || !AsignacionManager.existePlacaAsignada(placaVehiculo)) {
+            System.out.print("Ingrese la placa del vehículo: ");
+            placaVehiculo = scanner.nextLine();
+        }
+        String cedulaConductor = AsignacionManager.obtenerCedulaAsignada(placaVehiculo);
 
         System.out.print("Ingrese los códigos de los paquetes (separados por coma): ");
         String paquetesStr = scanner.nextLine();
@@ -228,6 +249,10 @@ public class Main {
     private static void iniciarRastreo(Scanner scanner) {
         System.out.print("Ingrese el código de la ruta para iniciar el rastreo: ");
         String codigoRuta = scanner.nextLine();
+        while(!ValidadorUtils.esCadenaNoVacia(codigoRuta) || !RutaManager.existeRuta(codigoRuta)) {
+            System.out.print("Ingrese el código de la ruta para iniciar el rastreo: ");
+            codigoRuta = scanner.nextLine();
+        }
         RastreoManager.iniciarRastreo(codigoRuta);
     }
 

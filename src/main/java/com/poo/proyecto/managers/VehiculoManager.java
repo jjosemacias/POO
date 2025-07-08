@@ -20,6 +20,7 @@ public class VehiculoManager {
         } catch (IOException e) {
             System.out.println("Error al leer el archivo de vehículos: " + e.getMessage());
         }
+        System.out.println("La placa no está registrada.");
         return false; // La placa no está registrada
     }
 
@@ -32,4 +33,5 @@ public class VehiculoManager {
             System.out.println("Error al registrar el vehículo: " + e.getMessage());
         }
     }
+    
 }

@@ -25,7 +25,7 @@ public class ValidadorUtils {
     }
 
     public static boolean esCedulaValida(String cedula) {
-        if (cedula == null || cedula.length() != 10 || !cedula.matches("\\d+")) {
+        if (cedula.length() != 10 || !cedula.matches("\\d+")) {
             System.out.println("La cédula debe tener 10 dígitos numéricos.");
             return false;
         }
@@ -67,6 +67,14 @@ public class ValidadorUtils {
     public static boolean esEstadoOperativoValido(String estadoOperativo) {
         if (estadoOperativo == null || !(estadoOperativo.equalsIgnoreCase("Operativo") || estadoOperativo.equalsIgnoreCase("Inoperativo"))) {
             System.out.println("El estado operativo debe ser 'Operativo' o 'Inoperativo'.");
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean esFechaValida(String fecha) {
+        if (fecha == null || !fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
+            System.out.println("La fecha debe tener el formato 'dd/mm/yyyy'.");
             return false;
         }
         return true;
