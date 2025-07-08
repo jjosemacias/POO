@@ -1,0 +1,6 @@
+Vehículo: GTR-3773
+Rutas:
+1|2003-12-01|GTR-3773|093198869|1
+Eventos:
+Total entregas: 0
+

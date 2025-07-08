@@ -1,3 +1,2 @@
-GTR-3773,Ford,SUV,40,1
-AAA-0000,Cayenne,SUV,400,1
-GTS-1234,Jaguar,Deportivo,300,1
+GTR-3773|Ford Explorer 2013|SUV|50.0|Operativo
+AAA-0000|Ford|SUV|5.0|Operativo

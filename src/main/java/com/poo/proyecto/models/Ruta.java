@@ -1,74 +1,85 @@
 package com.poo.proyecto.models;
-import java.util.ArrayList;
-import java.util.regex.*;
-import com.poo.proyecto.models.Vehiculo;
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.util.List;
 
 public class Ruta {
+    private String codigoRuta; // único
     private String fecha;
     private String placaVehiculo;
     private String cedulaConductor;
-    private ArrayList<String> codigosPaquetes;
+    private List<String> codigosPaquetes;
 
-    public Ruta(String fecha, String placaVehiculo, String cedulaConductor, ArrayList<String> codigosPaquetes) {
-        this.fecha = fecha;
-        this.placaVehiculo = placaVehiculo;
-        this.cedulaConductor = cedulaConductor;
-        this.codigosPaquetes = codigosPaquetes;
+    public Ruta(String codigoRuta, String fecha, String placaVehiculo, String cedulaConductor, List<String> codigosPaquetes) {
+        setCodigoRuta(codigoRuta);
+        setFecha(fecha);
+        setPlacaVehiculo(placaVehiculo);
+        setCedulaConductor(cedulaConductor);
+        setCodigosPaquetes(codigosPaquetes);
     }
 
-    public void almacenarRuta(){
-        String ruta = "src/main/java/com/poo/proyecto/resources/rutas.txt";
-        try (FileWriter writer = new FileWriter(ruta, true)) {
-            writer.write(this.fecha + "," + this.placaVehiculo + "," + this.cedulaConductor + "," + String.join("|", this.codigosPaquetes) + "\n");
-        } catch (IOException e) {
-            System.out.println("Error al almacenar la ruta: " + e.getMessage());
+    public String getCodigoRuta() {
+        return codigoRuta;
+    }
+
+    public void setCodigoRuta(String codigoRuta) {
+        if (codigoRuta == null || codigoRuta.isBlank()) {
+            throw new IllegalArgumentException("El código de ruta no puede estar vacío.");
         }
+        this.codigoRuta = codigoRuta;
     }
 
     public String getFecha() {
         return fecha;
     }
 
+    public void setFecha(String fecha) {
+        if (fecha == null || fecha.isBlank()) {
+            throw new IllegalArgumentException("La fecha no puede estar vacía.");
+        }
+        this.fecha = fecha;
+    }
+
     public String getPlacaVehiculo() {
         return placaVehiculo;
+    }
+
+    public void setPlacaVehiculo(String placaVehiculo) {
+        if (placaVehiculo == null || placaVehiculo.isBlank()) {
+            throw new IllegalArgumentException("La placa del vehículo no puede estar vacía.");
+        }
+        this.placaVehiculo = placaVehiculo;
     }
 
     public String getCedulaConductor() {
         return cedulaConductor;
     }
 
-    public ArrayList<String> getCodigosPaquetes() {
+    public void setCedulaConductor(String cedulaConductor) {
+        if (cedulaConductor == null || cedulaConductor.isBlank()) {
+            throw new IllegalArgumentException("La cédula del conductor no puede estar vacía.");
+        }
+        this.cedulaConductor = cedulaConductor;
+    }
+
+    public List<String> getCodigosPaquetes() {
         return codigosPaquetes;
     }
 
-    public boolean setFecha(String fecha) {
-        String regex = "^\\d{2}/\\d{2}/\\d{4}$";
-        if (fecha != null && fecha.matches(regex)) {
-            this.fecha = fecha;
-            return true;
-        } else {
-            System.out.println("Fecha inválida. Debe ser en formato dd/MM/yyyy.");
-            return false;
+    public void setCodigosPaquetes(List<String> codigosPaquetes) {
+        if (codigosPaquetes == null || codigosPaquetes.isEmpty()) {
+            throw new IllegalArgumentException("Debe haber al menos un paquete en la ruta.");
         }
+        this.codigosPaquetes = codigosPaquetes;
     }
-    public boolean setPlacaVehiculo(String placaVehiculo) {
-        if (Vehiculo.buscarVehiculoRegistrado(placaVehiculo) instanceof Vehiculo && Vehiculo.verificarConductorAsignado(placaVehiculo)) {
-            this.placaVehiculo = placaVehiculo;
-            this.cedulaConductor = Vehiculo.ConductorAsignado(placaVehiculo);
-            System.out.println("Placa de vehículo registrada y tiene conductor asignado: " + this.cedulaConductor);
-            return true;
-        } else {
-            System.out.println("Placa de vehículo no registrada o no tiene conductor asignado.");
-            return false;
-        }
+
+    public String toFileString() {
+        String paquetes = String.join(",", codigosPaquetes);
+        return codigoRuta + "|" + fecha + "|" + placaVehiculo + "|" + cedulaConductor + "|" + paquetes;
     }
-    public void setCodigosPaquetes(ArrayList<String> codigosPaquetes) {
-        if (codigosPaquetes != null && !codigosPaquetes.isEmpty()) {
-            this.codigosPaquetes = codigosPaquetes;
-        } else {
-            System.out.println("La lista de códigos de paquetes no puede estar vacía.");
-        }
+
+    @Override
+    public String toString() {
+        return "Ruta: " + codigoRuta + ", Fecha: " + fecha + ", Vehículo: " + placaVehiculo +
+               ", Conductor: " + cedulaConductor + ", Paquetes: " + String.join(", ", codigosPaquetes);
     }
 }

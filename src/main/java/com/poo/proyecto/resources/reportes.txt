@@ -1,0 +1,7 @@
+Reporte Ruta: 1
+Conductor: GTR-3773
+Entregas exitosas: 0
+Entregas fallidas: 0
+Eventos registrados: 1
+1 | 2025-07-08 03:35:21 | Choque | Se murieron todos
+
