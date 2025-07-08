@@ -1,8 +1,10 @@
 # POO
-PROYECTO DE PROGRAMACION ORIENTADA A OBJETOS
-INTEGRANTES:\n
-    - JOSE MACIAS \n
-    - ERICK RAMOS \n
-    - SAMUEL GUADALUPE \n
+### PROYECTO DE PROGRAMACION ORIENTADA A OBJETOS
 
-IPAO2025
+<strong> Integrantes: </strong>
+<ul>
+<li>Jose Macias</li>
+<li>Eric Ramos</li>
+<li>Samuel Guadalupe</li>
+</ul>
+<p>I PAO 2025</p>
