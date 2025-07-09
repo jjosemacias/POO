@@ -259,9 +259,17 @@ public class Main {
     private static void registrarEvento(Scanner scanner) {
         System.out.print("Ingrese el código de la ruta: ");
         String codigoRuta = scanner.nextLine();
+        while(!ValidadorUtils.esCadenaNoVacia(codigoRuta) || !RutaManager.existeRuta(codigoRuta)) {
+            System.out.print("Ingrese el código de la ruta: ");
+            codigoRuta = scanner.nextLine();
+        }
 
         System.out.print("Ingrese el tipo de evento (Parada, Entrega, Incidente): ");
         String tipoEvento = scanner.nextLine();
+        while(!ValidadorUtils.esCadenaNoVacia(tipoEvento)) {
+            System.out.print("Ingrese el tipo de evento (Parada, Entrega, Incidente): ");
+            tipoEvento = scanner.nextLine();
+        }
 
         EventoRutaManager.registrarEvento(codigoRuta, tipoEvento);
     }
@@ -269,12 +277,20 @@ public class Main {
     private static void consultarHistorial(Scanner scanner) {
         System.out.print("Ingrese la placa del vehículo: ");
         String placaVehiculo = scanner.nextLine();
+        while(!ValidadorUtils.esCadenaNoVacia(placaVehiculo) || !VehiculoManager.existePlacaRegistrada(placaVehiculo) || !AsignacionManager.existePlacaAsignada(placaVehiculo)) {
+            System.out.print("Ingrese la placa del vehículo: ");
+            placaVehiculo = scanner.nextLine();
+        }
         HistorialManager.consultarHistorial(placaVehiculo);
     }
 
     private static void generarReporte(Scanner scanner) {
         System.out.print("Ingrese el código de la ruta para generar el reporte: ");
         String codigoRuta = scanner.nextLine();
+        while(!ValidadorUtils.esCadenaNoVacia(codigoRuta) || !RutaManager.existeRuta(codigoRuta)) {
+            System.out.print("Ingrese el código de la ruta para generar el reporte: ");
+            codigoRuta = scanner.nextLine();
+        }
         ReporteRutaManager.generarReporteRuta(codigoRuta);
     }
 }

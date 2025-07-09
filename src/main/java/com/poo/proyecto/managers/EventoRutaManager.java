@@ -9,20 +9,6 @@ public class EventoRutaManager {
     private static final String ARCHIVO_EVENTOS = "src/main/java/com/poo/proyecto/resources/eventosRuta.txt";
 
     public static void registrarEvento(String codigoRuta, String tipoEvento) {
-        // Validar que el tipo de evento sea uno de los permitidos
-        if (!validarTipoEvento(tipoEvento)) {
-            System.out.println("Tipo de evento no válido.");
-            ValidadorUtils.esperar(2000);
-            return;
-        }
-
-        // Validar que la ruta exista
-        if (!RutaManager.existeRuta(codigoRuta)) {
-            System.out.println("La ruta con código " + codigoRuta + " no existe.");
-            ValidadorUtils.esperar(2000);
-            return;
-        }
-
         // Registrar el evento en el archivo
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_EVENTOS, true))) {
             String evento = generarEvento(codigoRuta, tipoEvento);
@@ -35,13 +21,8 @@ public class EventoRutaManager {
         ValidadorUtils.esperar(2000);
     }
 
-    private static boolean validarTipoEvento(String tipoEvento) {
-        // Definir los tipos de eventos válidos
-        return tipoEvento.equalsIgnoreCase("Parada") || tipoEvento.equalsIgnoreCase("Entrega") || tipoEvento.equalsIgnoreCase("Incidente");
-    }
-
     private static String generarEvento(String codigoRuta, String tipoEvento) {
-        // Generar la cadena que representa el evento para guardarlo en el archivo
+        // Generar la cadena que representa el evento para guardarlo en el archivo como toFile
         return codigoRuta + "|" + tipoEvento + "|" + System.currentTimeMillis(); // Usamos el timestamp como ejemplo para la fecha/hora del evento
     }
 

@@ -1,2 +1,3 @@
 AAA-0000|suv|suv|4.0|Operativo
 FGH-7777|a|a|3.0|operativo
+ABC-1234|Toyota|4x4|40.0|OPerativo
