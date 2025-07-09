@@ -53,7 +53,7 @@ public class Main {
                 }
             } while (opcion != 0);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Ha ocurrido un error: " + e.getMessage());
         }
     }
 
